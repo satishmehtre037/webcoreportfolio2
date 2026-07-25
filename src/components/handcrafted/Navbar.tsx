@@ -15,32 +15,33 @@ const LINKS = [
 export const AnimatedWLogo: React.FC = () => {
   return (
     <motion.span
-      whileHover="hover"
-      initial="initial"
-      className="grid h-9 w-9 place-items-center rounded-xl border-[3px] border-ink bg-wine text-ivory shadow-brutal-sm cursor-pointer"
+      whileHover={{ scale: 1.06, rotate: -2 }}
+      whileTap={{ scale: 0.95 }}
+      className="grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded-xl border-[3px] border-ink bg-wine text-ivory shadow-brutal-sm cursor-pointer transition-shadow hover:shadow-brutal"
     >
       <svg
         viewBox="0 0 28 28"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="h-5 w-5 text-ivory"
+        className="h-6 w-6 text-ivory"
       >
         <motion.path
           d="M 4 7 L 9 21 L 14 10 L 19 21 L 24 7"
           stroke="currentColor"
-          strokeWidth="3.5"
+          strokeWidth="3.8"
           strokeLinecap="round"
           strokeLinejoin="round"
-          variants={{
-            initial: { pathLength: 1 },
-            hover: {
-              pathLength: [0, 1],
-              transition: { duration: 0.6, ease: "easeInOut" },
-            },
-          }}
           initial={{ pathLength: 0 }}
-          animate={{ pathLength: 1 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+          animate={{
+            pathLength: [0, 1, 1, 1, 0],
+          }}
+          transition={{
+            duration: 3.2,
+            repeat: Infinity,
+            repeatDelay: 0.6,
+            ease: [0.22, 1, 0.36, 1],
+            times: [0, 0.45, 0.75, 0.85, 1],
+          }}
         />
       </svg>
     </motion.span>
@@ -70,11 +71,16 @@ export const Navbar: React.FC = () => {
           scrolled ? "bg-ivory shadow-brutal" : "bg-ivory/80 backdrop-blur-sm"
         }`}
       >
-        <a href="#top" className="flex items-center gap-2.5" data-testid="logo">
+        <a href="#top" className="flex items-center gap-3" data-testid="logo">
           <AnimatedWLogo />
-          <span className="font-display text-xl font-extrabold tracking-tight text-charcoal">
+          <motion.span
+            initial={{ opacity: 0, x: -12 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
+            className="font-display text-2xl sm:text-[1.65rem] font-extrabold tracking-tight text-charcoal select-none"
+          >
             WebCore
-          </span>
+          </motion.span>
         </a>
 
         <ul className="hidden md:flex items-center gap-8">
