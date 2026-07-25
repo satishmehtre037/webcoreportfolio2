@@ -33,14 +33,13 @@ export const AnimatedWLogo: React.FC = () => {
           strokeLinejoin="round"
           initial={{ pathLength: 0 }}
           animate={{
-            pathLength: [0, 1, 1, 1, 0],
+            pathLength: [0, 1, 1, 0],
           }}
           transition={{
-            duration: 3.2,
+            duration: 3.6,
             repeat: Infinity,
-            repeatDelay: 0.6,
-            ease: [0.22, 1, 0.36, 1],
-            times: [0, 0.45, 0.75, 0.85, 1],
+            ease: "easeInOut",
+            times: [0, 0.35, 0.85, 1],
           }}
         />
       </svg>
