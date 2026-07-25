@@ -2,6 +2,7 @@
 
 import React, { useEffect } from "react";
 import Lenis from "lenis";
+import { SplashScreen } from "@/components/handcrafted/SplashScreen";
 import { Navbar } from "@/components/handcrafted/Navbar";
 import { Hero } from "@/components/handcrafted/Hero";
 import { Marquee } from "@/components/handcrafted/Marquee";
@@ -66,6 +67,7 @@ export default function Page() {
 
   return (
     <main className="min-h-screen bg-ivory text-charcoal paper-grain">
+      <SplashScreen />
       <Navbar />
       <Hero />
       <Marquee />
