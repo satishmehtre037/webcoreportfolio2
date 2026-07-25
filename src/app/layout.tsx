@@ -1,17 +1,12 @@
 import type { Metadata, Viewport } from "next";
-import { Caveat, Geist, Geist_Mono, Syne } from "next/font/google";
-import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Caveat, DM_Sans, IBM_Plex_Mono, Syne } from "next/font/google";
 import { SITE } from "@/lib/constants/site";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  weight: ["400", "500", "600"],
 });
 
 const syne = Syne({
@@ -26,24 +21,30 @@ const caveat = Caveat({
   weight: ["500", "600", "700"],
 });
 
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-ibm-plex-mono",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE.url),
+  metadataBase: new URL(SITE.url || "https://webcore.studio"),
   title: {
-    default: `${SITE.name} — ${SITE.tagline}`,
-    template: `%s · ${SITE.name}`,
+    default: "WebCore — AI & Software Studio",
+    template: "%s · WebCore Studio",
   },
-  description: SITE.description,
+  description: "Handcrafted digital products, custom AI copilots, high-performance web platforms and brand systems for ambitious companies.",
   openGraph: {
-    title: `${SITE.name} — ${SITE.tagline}`,
-    description: SITE.description,
-    url: SITE.url,
-    siteName: SITE.name,
+    title: "WebCore — AI & Software Studio",
+    description: "Craft over templates. Handcrafted web platforms, AI copilots and brand systems.",
+    url: "https://webcore.studio",
+    siteName: "WebCore Studio",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: `${SITE.name} — ${SITE.tagline}`,
-    description: SITE.description,
+    title: "WebCore — AI & Software Studio",
+    description: "Craft over templates. Handcrafted web platforms, AI copilots and brand systems.",
   },
   robots: {
     index: true,
@@ -52,10 +53,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#f7f3ea" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f0f0f" },
-  ],
+  themeColor: "#F7F3EA",
 };
 
 export default function RootLayout({
@@ -64,18 +62,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} ${caveat.variable} min-h-screen bg-canvas font-sans text-ink antialiased`}
+        className={`${dmSans.variable} ${syne.variable} ${caveat.variable} ${ibmPlexMono.variable} min-h-screen bg-ivory font-body text-charcoal antialiased paper-grain`}
       >
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-ink focus:px-4 focus:py-2 focus:text-canvas"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-charcoal focus:px-4 focus:py-2 focus:text-ivory"
         >
           Skip to main content
         </a>
-        <ThemeProvider>{children}</ThemeProvider>
+        {children}
       </body>
     </html>
   );
 }
+
