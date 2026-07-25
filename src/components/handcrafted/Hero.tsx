@@ -122,7 +122,7 @@ export const Hero: React.FC = () => {
                 </motion.span>
               </span>
 
-              {/* Rolling Text Line - Fully Spaced, Unclipped & Generous Layout */}
+              {/* Rolling Text Line */}
               <span className="block overflow-visible py-1">
                 <motion.span variants={lineChild} className="block">
                   <span className="text-wine">AI </span>
@@ -196,7 +196,7 @@ export const Hero: React.FC = () => {
           </div>
 
           <div className="lg:col-span-5 relative h-[380px] sm:h-[460px]">
-            {/* Top Parallax Floating Image Card */}
+            {/* Top Parallax Floating AI Agency Project Showcase Card */}
             <motion.div
               style={{ y: yImg1, rotate }}
               animate={{
@@ -208,21 +208,26 @@ export const Hero: React.FC = () => {
                 repeatType: "mirror",
                 ease: "easeInOut",
               }}
-              whileHover={{ scale: 1.03, rotate: -2 }}
-              className="absolute right-0 top-0 w-[70%] rotate-[-4deg] rounded-2xl border-[3px] border-ink bg-white shadow-brutal-lg overflow-hidden cursor-pointer transition-shadow hover:shadow-brutal-xl"
+              whileHover={{ scale: 1.04, rotate: -2 }}
+              className="absolute right-0 top-0 w-[78%] rotate-[-4deg] rounded-2xl border-[3px] border-ink bg-white shadow-brutal-lg overflow-hidden cursor-pointer transition-all hover:shadow-brutal-xl z-10"
             >
-              <img
-                src="https://images.unsplash.com/photo-1761005653783-a48d969a3043?crop=entropy&cs=srgb&fm=jpg&q=85&w=700"
-                alt="Editorial product spotlight"
-                className="h-64 w-full object-cover"
-              />
-              <div className="flex items-center justify-between border-t-[3px] border-ink px-4 py-2 font-mono-plex text-xs uppercase bg-ivory">
-                <span>Case_01</span>
-                <span className="text-wine font-bold">AI Retail</span>
+              <div className="relative">
+                <img
+                  src="/images/hero_showcase_1.png"
+                  alt="AI Copilot & Dashboard Showcase"
+                  className="h-60 sm:h-64 w-full object-cover"
+                />
+                <span className="absolute top-3 left-3 rounded-full border-[2px] border-ink bg-wine/95 px-2.5 py-1 font-mono-plex text-[0.65rem] font-bold uppercase tracking-widest text-ivory backdrop-blur-sm">
+                  ● LIVE DEMO
+                </span>
+              </div>
+              <div className="flex items-center justify-between border-t-[3px] border-ink px-4 py-2.5 font-mono-plex text-xs uppercase bg-ivory">
+                <span className="font-bold text-charcoal">Case_01: AI Copilot System</span>
+                <span className="text-wine font-extrabold">ACTIVE ✦</span>
               </div>
             </motion.div>
 
-            {/* Bottom Parallax Floating Image Card */}
+            {/* Bottom Parallax Floating Mobile & Web App Showcase Card */}
             <motion.div
               style={{ y: yImg2 }}
               animate={{
@@ -235,14 +240,18 @@ export const Hero: React.FC = () => {
                 ease: "easeInOut",
                 delay: 0.5,
               }}
-              whileHover={{ scale: 1.04, rotate: 3 }}
-              className="absolute left-0 bottom-2 w-[56%] rotate-[5deg] rounded-2xl border-[3px] border-ink bg-sage shadow-brutal overflow-hidden cursor-pointer transition-shadow hover:shadow-brutal-lg"
+              whileHover={{ scale: 1.05, rotate: 3 }}
+              className="absolute left-0 bottom-2 w-[62%] rotate-[5deg] rounded-2xl border-[3px] border-ink bg-sage shadow-brutal overflow-hidden cursor-pointer transition-all hover:shadow-brutal-lg z-20"
             >
               <img
-                src="https://images.unsplash.com/photo-1695479044464-67299fa84782?crop=entropy&cs=srgb&fm=jpg&q=85&w=600"
-                alt="Minimalist product"
-                className="h-44 w-full object-cover"
+                src="/images/hero_showcase_2.png"
+                alt="Spatial App Studio Mockup"
+                className="h-44 sm:h-48 w-full object-cover"
               />
+              <div className="flex items-center justify-between border-t-[3px] border-ink px-3.5 py-2 font-mono-plex text-[0.7rem] uppercase bg-ivory">
+                <span className="font-bold text-charcoal">Case_02: Spatial App</span>
+                <span className="text-wine font-extrabold">SHIPPED ✦</span>
+              </div>
             </motion.div>
 
             {/* Floating Handwritten Badge */}
@@ -257,12 +266,12 @@ export const Hero: React.FC = () => {
                 repeatType: "mirror",
                 ease: "easeInOut",
               }}
-              className="absolute -left-4 top-4 rounded-xl border-[3px] border-ink bg-ivory px-3 py-1.5 shadow-brutal z-20"
+              className="absolute -left-4 top-4 rounded-xl border-[3px] border-ink bg-ivory px-3 py-1.5 shadow-brutal z-30"
             >
               <span className="font-hand text-2xl text-wine select-none">shipped in weeks ✦</span>
             </motion.div>
 
-            <CurvedArrow className="absolute -bottom-6 left-1/2 h-16 w-20 hidden lg:block z-20" />
+            <CurvedArrow className="absolute -bottom-6 left-1/2 h-16 w-20 hidden lg:block z-30" />
           </div>
         </div>
 
