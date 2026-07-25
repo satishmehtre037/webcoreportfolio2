@@ -7,6 +7,8 @@ interface BrutalButtonProps {
   variant?: "primary" | "wine" | "ivory" | "forest";
   as?: "button" | "a";
   href?: string;
+  target?: string;
+  rel?: string;
   className?: string;
   children: React.ReactNode;
   onClick?: () => void;
@@ -22,6 +24,8 @@ export const BrutalButton: React.FC<BrutalButtonProps> = ({
   className = "",
   as = "button",
   href,
+  target,
+  rel,
   onClick,
   id,
   title,
@@ -42,6 +46,8 @@ export const BrutalButton: React.FC<BrutalButtonProps> = ({
     return (
       <motion.a
         href={href}
+        target={target}
+        rel={rel}
         onClick={onClick}
         id={id}
         title={title}

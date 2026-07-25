@@ -1,19 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Overline, Reveal, BrutalButton } from "./Primitives";
 import { Circle } from "./Doodles";
 
-const CASES = [
+interface CaseStudy {
+  tag: string;
+  title: string;
+  body: string;
+  metric: string;
+  img?: string;
+  video?: string;
+  bg: string;
+  link?: string;
+  ctaText?: string;
+}
+
+const CASES: CaseStudy[] = [
   {
-    tag: "AI Retail Copilot",
-    title: "Aster — a shopping assistant that sells",
-    body: "We designed and built an LLM copilot that lifted conversion 34% for a DTC skincare brand, from prompt architecture to the storefront UI.",
-    metric: "+34% conversion",
-    img: "https://images.unsplash.com/photo-1695479044464-67299fa84782?crop=entropy&cs=srgb&fm=jpg&q=85&w=900",
+    tag: "Fullstack Web Application",
+    title: "Class Management Platform — Education Ops",
+    body: "A comprehensive fullstack class management web application engineered for modern educational institutions, streamlining student rosters, course scheduling, attendance tracking, and automated administrative workflows.",
+    metric: "100% Automated Ops",
+    video: "/videos/work_case_1.mp4",
     bg: "bg-sage",
+    link: "https://github.com/satishmehtre037/webcoreportfolio2",
+    ctaText: "View Live Project",
   },
   {
     tag: "Audio Platform",
@@ -22,6 +36,8 @@ const CASES = [
     metric: "0 → 40k users",
     img: "https://images.unsplash.com/photo-1761005653783-a48d969a3043?crop=entropy&cs=srgb&fm=jpg&q=85&w=900",
     bg: "bg-wine",
+    link: "#contact",
+    ctaText: "Read the story",
   },
 ];
 
@@ -42,6 +58,8 @@ export const CaseStudies: React.FC = () => {
         <div className="mt-16 space-y-24">
           {CASES.map((c, i) => {
             const flip = i % 2 === 1;
+            const isExternalLink = c.link?.startsWith("http");
+
             return (
               <Reveal key={c.title}>
                 <article
@@ -69,16 +87,35 @@ export const CaseStudies: React.FC = () => {
                       transition={{ type: "spring", stiffness: 300, damping: 20 }}
                       className="relative overflow-hidden rounded-2xl border-[3px] border-ink bg-black shadow-brutal-lg"
                     >
-                      <motion.img
-                        variants={{
-                          initial: { scale: 1 },
-                          hover: { scale: 1.06 },
-                        }}
-                        transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
-                        src={c.img}
-                        alt={c.title}
-                        className="h-72 w-full object-cover sm:h-[26rem]"
-                      />
+                      {c.video ? (
+                        <video
+                          autoPlay
+                          loop
+                          muted
+                          playsInline
+                          preload="auto"
+                          src={c.video}
+                          className="h-72 w-full object-cover sm:h-[26rem]"
+                          ref={(el) => {
+                            if (el) {
+                              el.defaultMuted = true;
+                              el.muted = true;
+                              el.play().catch(() => {});
+                            }
+                          }}
+                        />
+                      ) : (
+                        <motion.img
+                          variants={{
+                            initial: { scale: 1 },
+                            hover: { scale: 1.06 },
+                          }}
+                          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
+                          src={c.img}
+                          alt={c.title}
+                          className="h-72 w-full object-cover sm:h-[26rem]"
+                        />
+                      )}
                       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent,rgba(0,0,0,0.45))]" />
                       <span className="absolute left-4 top-4 rounded-full border-[3px] border-ink bg-ivory px-4 py-1.5 font-mono-plex text-xs uppercase tracking-widest text-charcoal shadow-brutal font-bold">
                         {c.tag}
@@ -97,7 +134,7 @@ export const CaseStudies: React.FC = () => {
                     <h3 className="mt-2 font-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl text-charcoal">
                       {c.title}
                     </h3>
-                    <p className="mt-4 text-charcoal/75 font-body">{c.body}</p>
+                    <p className="mt-4 text-charcoal/75 font-body leading-relaxed">{c.body}</p>
                     <motion.div
                       whileHover={{ scale: 1.04, rotate: 1 }}
                       className="mt-6 inline-flex items-center gap-3 rounded-xl border-[3px] border-ink bg-ivory px-5 py-3 shadow-brutal transition-shadow cursor-default"
@@ -109,11 +146,13 @@ export const CaseStudies: React.FC = () => {
                     <div className="mt-8">
                       <BrutalButton
                         as="a"
-                        href="#contact"
-                        variant="ivory"
+                        href={c.link || "#contact"}
+                        target={isExternalLink ? "_blank" : undefined}
+                        rel={isExternalLink ? "noopener noreferrer" : undefined}
+                        variant="wine"
                         data-testid={`case-cta-${i}`}
                       >
-                        Read the story <ArrowUpRight size={16} />
+                        {c.ctaText || (isExternalLink ? "View Live Project" : "Read the story")} <ArrowUpRight size={16} />
                       </BrutalButton>
                     </div>
                   </div>
