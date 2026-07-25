@@ -196,7 +196,7 @@ export const Hero: React.FC = () => {
           </div>
 
           <div className="lg:col-span-5 relative h-[380px] sm:h-[460px]">
-            {/* Top Parallax Floating AI Agency Project Showcase Card */}
+            {/* Top Parallax Floating Cinematic Video Card */}
             <motion.div
               style={{ y: yImg1, rotate }}
               animate={{
@@ -209,21 +209,26 @@ export const Hero: React.FC = () => {
                 ease: "easeInOut",
               }}
               whileHover={{ scale: 1.04, rotate: -2 }}
-              className="absolute right-0 top-0 w-[78%] rotate-[-4deg] rounded-2xl border-[3px] border-ink bg-white shadow-brutal-lg overflow-hidden cursor-pointer transition-all hover:shadow-brutal-xl z-10"
+              className="absolute right-0 top-0 w-[82%] sm:w-[78%] rotate-[-4deg] rounded-2xl border-[3px] border-ink bg-black shadow-brutal-lg overflow-hidden cursor-pointer transition-all hover:shadow-brutal-xl z-10"
             >
               <div className="relative">
-                <img
-                  src="/images/hero_showcase_1.png"
-                  alt="AI Copilot & Dashboard Showcase"
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="h-60 sm:h-64 w-full object-cover"
-                />
-                <span className="absolute top-3 left-3 rounded-full border-[2px] border-ink bg-wine/95 px-2.5 py-1 font-mono-plex text-[0.65rem] font-bold uppercase tracking-widest text-ivory backdrop-blur-sm">
-                  ● LIVE DEMO
+                >
+                  <source src="/videos/hero_cinematic.mp4" type="video/mp4" />
+                </video>
+                <span className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full border-[2px] border-ink bg-wine/95 px-2.5 py-1 font-mono-plex text-[0.65rem] font-bold uppercase tracking-widest text-ivory backdrop-blur-sm">
+                  <span className="h-2 w-2 rounded-full bg-sage animate-pulse" />
+                  LIVE REEL
                 </span>
               </div>
               <div className="flex items-center justify-between border-t-[3px] border-ink px-4 py-2.5 font-mono-plex text-xs uppercase bg-ivory">
-                <span className="font-bold text-charcoal">Case_01: AI Copilot System</span>
-                <span className="text-wine font-extrabold">ACTIVE ✦</span>
+                <span className="font-bold text-charcoal">Case_01: AI App Showcase</span>
+                <span className="text-wine font-extrabold">LOOPING ✦</span>
               </div>
             </motion.div>
 
