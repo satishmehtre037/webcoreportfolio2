@@ -40,7 +40,8 @@ const lineChild = {
 export const Hero: React.FC = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const videoRef = useRef<HTMLVideoElement>(null);
+  const videoRef1 = useRef<HTMLVideoElement>(null);
+  const videoRef2 = useRef<HTMLVideoElement>(null);
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -54,18 +55,20 @@ export const Hero: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // Force autoplay video programmatically to guarantee playback across all browsers
+  // Force autoplay video programmatically for both video reels across all browsers
   useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.defaultMuted = true;
-      videoRef.current.muted = true;
-      const playPromise = videoRef.current.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          console.warn("Video autoplay prevented:", error);
-        });
+    [videoRef1.current, videoRef2.current].forEach((video) => {
+      if (video) {
+        video.defaultMuted = true;
+        video.muted = true;
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch((error) => {
+            console.warn("Video autoplay prevented:", error);
+          });
+        }
       }
-    }
+    });
   }, []);
 
   const yImg1 = useTransform(scrollYProgress, [0, 1], [0, -120]);
@@ -212,7 +215,7 @@ export const Hero: React.FC = () => {
           </div>
 
           <div className="lg:col-span-5 relative h-[380px] sm:h-[460px]">
-            {/* Top Parallax Floating Cinematic Video Card */}
+            {/* Top Parallax Floating Cinematic Video Card 1 */}
             <motion.div
               style={{ y: yImg1, rotate }}
               animate={{
@@ -229,7 +232,7 @@ export const Hero: React.FC = () => {
             >
               <div className="relative">
                 <video
-                  ref={videoRef}
+                  ref={videoRef1}
                   autoPlay
                   loop
                   muted
@@ -240,7 +243,7 @@ export const Hero: React.FC = () => {
                 />
                 <span className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full border-[2px] border-ink bg-wine/95 px-2.5 py-1 font-mono-plex text-[0.65rem] font-bold uppercase tracking-widest text-ivory backdrop-blur-sm">
                   <span className="h-2 w-2 rounded-full bg-sage animate-pulse" />
-                  LIVE REEL
+                  LIVE REEL 01
                 </span>
               </div>
               <div className="flex items-center justify-between border-t-[3px] border-ink px-4 py-2.5 font-mono-plex text-xs uppercase bg-ivory">
@@ -249,7 +252,7 @@ export const Hero: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Bottom Parallax Floating Mobile & Web App Showcase Card */}
+            {/* Bottom Parallax Floating Cinematic Video Card 2 */}
             <motion.div
               style={{ y: yImg2 }}
               animate={{
@@ -263,15 +266,26 @@ export const Hero: React.FC = () => {
                 delay: 0.5,
               }}
               whileHover={{ scale: 1.05, rotate: 3 }}
-              className="absolute left-0 bottom-2 w-[62%] rotate-[5deg] rounded-2xl border-[3px] border-ink bg-sage shadow-brutal overflow-hidden cursor-pointer transition-all hover:shadow-brutal-lg z-20"
+              className="absolute left-0 bottom-2 w-[64%] rotate-[5deg] rounded-2xl border-[3px] border-ink bg-black shadow-brutal overflow-hidden cursor-pointer transition-all hover:shadow-brutal-lg z-20"
             >
-              <img
-                src="/images/hero_showcase_2.png"
-                alt="Spatial App Studio Mockup"
-                className="h-44 sm:h-48 w-full object-cover"
-              />
-              <div className="flex items-center justify-between border-t-[3px] border-ink px-3.5 py-2 font-mono-plex text-[0.7rem] uppercase bg-ivory">
-                <span className="font-bold text-charcoal">Case_02: Spatial App</span>
+              <div className="relative">
+                <video
+                  ref={videoRef2}
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="auto"
+                  src="/videos/hero_cinematic_2.mp4"
+                  className="h-44 sm:h-48 w-full object-cover"
+                />
+                <span className="absolute top-2.5 left-2.5 flex items-center gap-1 rounded-full border-[2px] border-ink bg-wine/95 px-2 py-0.5 font-mono-plex text-[0.6rem] font-bold uppercase tracking-widest text-ivory backdrop-blur-sm">
+                  <span className="h-1.5 w-1.5 rounded-full bg-sage animate-pulse" />
+                  REEL 02
+                </span>
+              </div>
+              <div className="flex items-center justify-between border-t-[3px] border-ink px-3 py-2 font-mono-plex text-[0.7rem] uppercase bg-ivory">
+                <span className="font-bold text-charcoal">Case_02: Spatial Product</span>
                 <span className="text-wine font-extrabold">SHIPPED ✦</span>
               </div>
             </motion.div>
