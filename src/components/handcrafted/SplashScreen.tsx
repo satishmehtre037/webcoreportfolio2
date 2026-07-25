@@ -24,7 +24,7 @@ export const SplashScreen: React.FC = () => {
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
           className="fixed inset-0 z-[9999] flex items-center justify-center bg-wine pointer-events-none"
         >
-          {/* ONLY Giant Beige SVG W Stroke — No Card Container */}
+          {/* ONLY Giant Beige SVG W Stroke — Fluid Editorial Typography */}
           <motion.div
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -42,7 +42,7 @@ export const SplashScreen: React.FC = () => {
               className="h-44 w-44 sm:h-64 sm:w-64 text-ivory drop-shadow-lg"
             >
               <motion.path
-                d="M 4 7 L 9 21 L 14 10 L 19 21 L 24 7"
+                d="M 3 7.5 C 4.5 15, 6.5 21, 9 21 C 11.5 21, 12.8 13.5, 14 9 C 15.2 13.5, 16.5 21, 19 21 C 21.5 21, 23.5 15, 25 7.5"
                 stroke="currentColor"
                 strokeWidth="3.2"
                 strokeLinecap="round"
