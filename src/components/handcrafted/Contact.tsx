@@ -129,7 +129,7 @@ export const Contact: React.FC = () => {
                   <div className="mt-6 flex flex-wrap items-center justify-center gap-4">
                     <BrutalButton
                       as="a"
-                      href="https://wa.me/919876543210?text=Hi%20WebCore!%20I%20just%20submitted%20a%20project%20brief."
+                      href="https://wa.me/918779841346?text=Hi%20WebCore!%20I%20just%20submitted%20a%20project%20brief."
                       target="_blank"
                       rel="noopener noreferrer"
                       variant="forest"
@@ -194,7 +194,7 @@ export const Contact: React.FC = () => {
                         className={inputClass}
                         value={form.phone}
                         onChange={set("phone")}
-                        placeholder="+91 98765 43210"
+                        placeholder="+91 87798 41346"
                         data-testid="contact-phone"
                       />
                     </div>
