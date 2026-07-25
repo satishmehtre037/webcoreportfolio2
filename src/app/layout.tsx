@@ -33,18 +33,12 @@ export const metadata: Metadata = {
     default: "WebCore — AI & Software Studio",
     template: "%s · WebCore Studio",
   },
-  description: "Handcrafted digital products, custom AI copilots, high-performance web platforms and brand systems for ambitious companies.",
-  icons: {
-    icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-      { url: "/favicon.ico" },
-    ],
-    shortcut: "/icon.svg",
-    apple: "/icon.svg",
-  },
+  description:
+    "Handcrafted digital products, custom AI copilots, high-performance web platforms and brand systems for ambitious companies.",
   openGraph: {
     title: "WebCore — AI & Software Studio",
-    description: "Craft over templates. Handcrafted web platforms, AI copilots and brand systems.",
+    description:
+      "Craft over templates. Handcrafted web platforms, AI copilots and brand systems.",
     url: "https://webcore.studio",
     siteName: "WebCore Studio",
     type: "website",
@@ -52,7 +46,8 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "WebCore — AI & Software Studio",
-    description: "Craft over templates. Handcrafted web platforms, AI copilots and brand systems.",
+    description:
+      "Craft over templates. Handcrafted web platforms, AI copilots and brand systems.",
   },
   robots: {
     index: true,
@@ -71,10 +66,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any" />
-        <link rel="apple-touch-icon" href="/icon.svg" />
-      </head>
       <body
         className={`${dmSans.variable} ${syne.variable} ${caveat.variable} ${ibmPlexMono.variable} min-h-screen bg-ivory font-body text-charcoal antialiased paper-grain`}
       >
