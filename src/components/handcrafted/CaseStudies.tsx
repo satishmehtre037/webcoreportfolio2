@@ -26,7 +26,7 @@ const CASES: CaseStudy[] = [
     metric: "100% Automated Ops",
     video: "/videos/work_case_1.mp4",
     bg: "bg-sage",
-    link: "https://github.com/satishmehtre037/webcoreportfolio2",
+    link: "https://rkdeamy.vercel.app",
     ctaText: "View Live Project",
   },
   {
