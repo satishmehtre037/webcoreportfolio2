@@ -12,12 +12,12 @@ const LINKS = [
   { label: "Studio", href: "#studio" },
 ];
 
-export const AnimatedWLogo: React.FC = () => {
+export const AnimatedWLogo: React.FC<{ borderColor?: string }> = ({ borderColor = "border-ink" }) => {
   return (
     <motion.span
       whileHover={{ scale: 1.06, rotate: -2 }}
       whileTap={{ scale: 0.95 }}
-      className="grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded-xl border-[3px] border-ink bg-wine text-ivory shadow-brutal-sm cursor-pointer transition-shadow hover:shadow-brutal"
+      className={`grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded-xl border-[3px] ${borderColor} bg-wine text-ivory shadow-brutal-sm cursor-pointer transition-shadow hover:shadow-brutal`}
     >
       <svg
         viewBox="0 0 28 28"

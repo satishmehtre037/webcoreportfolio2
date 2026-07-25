@@ -1,4 +1,7 @@
+"use client";
+
 import React from "react";
+import { AnimatedWLogo } from "./Navbar";
 import { Squiggle } from "./Doodles";
 
 const COLS = [
@@ -21,14 +24,12 @@ export const Footer: React.FC = () => {
       <div className="mx-auto max-w-6xl px-5 sm:px-6 py-16">
         <div className="grid grid-cols-1 gap-12 md:grid-cols-12">
           <div className="md:col-span-6">
-            <div className="flex items-center gap-2">
-              <span className="grid h-9 w-9 place-items-center rounded-lg border-[3px] border-ivory bg-wine font-display font-extrabold text-ivory">
-                W
-              </span>
-              <span className="font-display text-2xl font-extrabold text-ivory">
+            <a href="#top" className="flex items-center gap-3 w-fit" data-testid="footer-logo">
+              <AnimatedWLogo borderColor="border-ivory" />
+              <span className="font-display text-2xl sm:text-[1.65rem] font-extrabold tracking-tight text-ivory select-none">
                 WebCore
               </span>
-            </div>
+            </a>
             <p className="mt-5 max-w-sm text-ivory/60 font-body">
               A design-led AI & software studio building intelligent products with a human signature.
             </p>
