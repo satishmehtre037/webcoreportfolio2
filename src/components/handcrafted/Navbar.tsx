@@ -12,6 +12,41 @@ const LINKS = [
   { label: "Studio", href: "#studio" },
 ];
 
+export const AnimatedWLogo: React.FC = () => {
+  return (
+    <motion.span
+      whileHover="hover"
+      initial="initial"
+      className="grid h-9 w-9 place-items-center rounded-xl border-[3px] border-ink bg-wine text-ivory shadow-brutal-sm cursor-pointer"
+    >
+      <svg
+        viewBox="0 0 28 28"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="h-5 w-5 text-ivory"
+      >
+        <motion.path
+          d="M 4 7 L 9 21 L 14 10 L 19 21 L 24 7"
+          stroke="currentColor"
+          strokeWidth="3.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          variants={{
+            initial: { pathLength: 1 },
+            hover: {
+              pathLength: [0, 1],
+              transition: { duration: 0.6, ease: "easeInOut" },
+            },
+          }}
+          initial={{ pathLength: 0 }}
+          animate={{ pathLength: 1 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
+        />
+      </svg>
+    </motion.span>
+  );
+};
+
 export const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
@@ -35,10 +70,8 @@ export const Navbar: React.FC = () => {
           scrolled ? "bg-ivory shadow-brutal" : "bg-ivory/80 backdrop-blur-sm"
         }`}
       >
-        <a href="#top" className="flex items-center gap-2" data-testid="logo">
-          <span className="grid h-8 w-8 place-items-center rounded-lg border-[3px] border-ink bg-wine text-ivory font-display font-extrabold text-lg">
-            W
-          </span>
+        <a href="#top" className="flex items-center gap-2.5" data-testid="logo">
+          <AnimatedWLogo />
           <span className="font-display text-xl font-extrabold tracking-tight text-charcoal">
             WebCore
           </span>
