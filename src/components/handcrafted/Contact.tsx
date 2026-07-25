@@ -44,15 +44,18 @@ export const Contact: React.FC = () => {
   return (
     <section id="contact" className="relative py-24 sm:py-32" data-testid="contact">
       <div className="mx-auto max-w-6xl px-5 sm:px-6">
-        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-5">
+        <div className="grid grid-cols-1 items-start gap-12 lg:grid-cols-12 lg:gap-16">
+          {/* Left Column - Headline & Microcopy */}
+          <div className="lg:col-span-5 lg:pr-4">
             <Overline>Start a project</Overline>
-            <h2 className="mt-4 font-display text-4xl font-extrabold leading-[0.95] tracking-tight sm:text-6xl text-charcoal">
+            <h2 className="mt-4 font-display font-extrabold leading-[0.94] tracking-tight text-charcoal text-[2.6rem] sm:text-5xl lg:text-[3.2rem]">
               Let&apos;s build
               <br />
-              something <span className="text-wine">real.</span>
+              something
+              <br />
+              <span className="text-wine">real.</span>
             </h2>
-            <p className="mt-6 max-w-sm text-charcoal/75 font-body">
+            <p className="mt-6 max-w-sm text-charcoal/75 font-body text-base leading-relaxed">
               Tell us what you&apos;re making. We reply to every serious brief within 48 hours — a real human, not a bot.
             </p>
 
@@ -62,12 +65,13 @@ export const Contact: React.FC = () => {
             </div>
           </div>
 
+          {/* Right Column: Contact Form Box */}
           <Reveal className="lg:col-span-7" y={30}>
             <div
               className="relative rounded-2xl border-[3px] border-ink bg-white p-6 shadow-brutal-xl sm:p-9"
               data-testid="contact-card"
             >
-              <Asterisk className="absolute -right-4 -top-4 h-9 w-9" />
+              <Asterisk className="absolute -right-4 -top-4 h-9 w-9 z-10" />
 
               {done ? (
                 <div
@@ -92,7 +96,7 @@ export const Contact: React.FC = () => {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={submit} className="space-y-5" data-testid="contact-form">
+                <form onSubmit={submit} className="space-y-6" data-testid="contact-form">
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
                       <label className="mb-2 block font-mono-plex text-xs uppercase tracking-widest text-charcoal">
@@ -144,9 +148,9 @@ export const Contact: React.FC = () => {
                             key={b}
                             type="button"
                             onClick={() => setForm((f) => ({ ...f, budget: b }))}
-                            className={`rounded-full border-[2px] border-ink px-3 py-2 text-xs font-bold transition-colors ${
+                            className={`rounded-full border-[2px] border-ink px-3.5 py-2 text-xs font-bold transition-all ${
                               form.budget === b
-                                ? "bg-wine text-ivory"
+                                ? "bg-wine text-ivory shadow-brutal-sm"
                                 : "bg-ivory hover:bg-sage text-charcoal"
                             }`}
                             data-testid={`budget-${b}`}
