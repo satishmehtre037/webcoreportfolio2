@@ -35,7 +35,10 @@ export const metadata: Metadata = {
   },
   description: "Handcrafted digital products, custom AI copilots, high-performance web platforms and brand systems for ambitious companies.",
   icons: {
-    icon: "/icon.svg",
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.ico" },
+    ],
     shortcut: "/icon.svg",
     apple: "/icon.svg",
   },
@@ -68,6 +71,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/icon.svg" type="image/svg+xml" sizes="any" />
+        <link rel="apple-touch-icon" href="/icon.svg" />
+      </head>
       <body
         className={`${dmSans.variable} ${syne.variable} ${caveat.variable} ${ibmPlexMono.variable} min-h-screen bg-ivory font-body text-charcoal antialiased paper-grain`}
       >
