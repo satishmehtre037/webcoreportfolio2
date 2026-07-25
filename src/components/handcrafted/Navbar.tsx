@@ -26,9 +26,9 @@ export const AnimatedWLogo: React.FC = () => {
         className="h-6 w-6 text-ivory"
       >
         <motion.path
-          d="M 3 7.5 C 4.5 15, 6.5 21, 9 21 C 11.5 21, 12.8 13.5, 14 9 C 15.2 13.5, 16.5 21, 19 21 C 21.5 21, 23.5 15, 25 7.5"
+          d="M 4 7 L 9 21 L 14 10 L 19 21 L 24 7"
           stroke="currentColor"
-          strokeWidth="3.6"
+          strokeWidth="3.8"
           strokeLinecap="round"
           strokeLinejoin="round"
           initial={{ pathLength: 0 }}
