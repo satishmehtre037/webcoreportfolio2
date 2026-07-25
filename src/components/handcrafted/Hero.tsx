@@ -40,6 +40,8 @@ const lineChild = {
 export const Hero: React.FC = () => {
   const [wordIndex, setWordIndex] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
@@ -50,6 +52,20 @@ export const Hero: React.FC = () => {
       setWordIndex((prev) => (prev + 1) % ROLLING_WORDS.length);
     }, 2800);
     return () => clearInterval(timer);
+  }, []);
+
+  // Force autoplay video programmatically to guarantee playback across all browsers
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.warn("Video autoplay prevented:", error);
+        });
+      }
+    }
   }, []);
 
   const yImg1 = useTransform(scrollYProgress, [0, 1], [0, -120]);
@@ -213,14 +229,15 @@ export const Hero: React.FC = () => {
             >
               <div className="relative">
                 <video
+                  ref={videoRef}
                   autoPlay
                   loop
                   muted
                   playsInline
+                  preload="auto"
+                  src="/videos/hero_cinematic.mp4"
                   className="h-60 sm:h-64 w-full object-cover"
-                >
-                  <source src="/videos/hero_cinematic.mp4" type="video/mp4" />
-                </video>
+                />
                 <span className="absolute top-3 left-3 flex items-center gap-1.5 rounded-full border-[2px] border-ink bg-wine/95 px-2.5 py-1 font-mono-plex text-[0.65rem] font-bold uppercase tracking-widest text-ivory backdrop-blur-sm">
                   <span className="h-2 w-2 rounded-full bg-sage animate-pulse" />
                   LIVE REEL
