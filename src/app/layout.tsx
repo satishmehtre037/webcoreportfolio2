@@ -34,6 +34,11 @@ export const metadata: Metadata = {
     template: "%s · WebCore Studio",
   },
   description: "Handcrafted digital products, custom AI copilots, high-performance web platforms and brand systems for ambitious companies.",
+  icons: {
+    icon: "/icon.svg",
+    shortcut: "/icon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "WebCore — AI & Software Studio",
     description: "Craft over templates. Handcrafted web platforms, AI copilots and brand systems.",
@@ -77,4 +82,3 @@ export default function RootLayout({
     </html>
   );
 }
-
