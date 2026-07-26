@@ -2,7 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import { Overline, Reveal } from "./Primitives";
+import { Overline } from "./Primitives";
 import { Star, Squiggle } from "./Doodles";
 
 const COL1 = [
@@ -13,9 +13,9 @@ const COL1 = [
     color: "bg-sage",
   },
   {
-    title: "Resonar Sound",
-    category: "Audio Platform",
-    img: "https://images.unsplash.com/photo-1761005653783-a48d969a3043?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
+    title: "Caffè Florian",
+    category: "Boutique Roastery",
+    img: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
     color: "bg-wine text-ivory",
   },
   {

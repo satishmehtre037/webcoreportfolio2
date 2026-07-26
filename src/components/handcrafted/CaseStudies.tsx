@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { Overline, Reveal, BrutalButton } from "./Primitives";
@@ -30,14 +30,14 @@ const CASES: CaseStudy[] = [
     ctaText: "View Live Project",
   },
   {
-    tag: "Audio Platform",
-    title: "Resonar — spatial sound, reimagined",
-    body: "A ground-up web platform and design system for a next-gen audio startup, complete with a realtime dashboard and brand identity.",
-    metric: "0 → 40k users",
-    img: "https://images.unsplash.com/photo-1761005653783-a48d969a3043?crop=entropy&cs=srgb&fm=jpg&q=85&w=900",
-    bg: "bg-wine",
-    link: "#contact",
-    ctaText: "Read the story",
+    tag: "Boutique E-Commerce & Brand",
+    title: "Caffè Florian — Luxury Coffee Roastery",
+    body: "A high-end web experience and interactive platform engineered for Caffè Florian, featuring bespoke animations, fluid showcase layouts, seamless ordering, and luxury brand storytelling.",
+    metric: "Sub-Second UX & Speed",
+    video: "/videos/work_case_2.mp4",
+    bg: "bg-wine text-ivory",
+    link: "https://caffe-florian.vercel.app",
+    ctaText: "View Live Project",
   },
 ];
 

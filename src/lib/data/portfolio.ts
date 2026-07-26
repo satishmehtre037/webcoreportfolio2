@@ -2,26 +2,26 @@ import type { PortfolioProject } from "@/types";
 
 export const portfolioProjects: PortfolioProject[] = [
   {
-    id: "atlas",
-    title: "Atlas — operations copilot",
-    category: "AI · Enterprise",
+    id: "rkdeamy",
+    title: "Class Management Platform",
+    category: "Fullstack · Education Ops",
     description:
-      "A retrieval-augmented assistant that cut support resolution time by 41% for a logistics platform.",
+      "A comprehensive fullstack class management web application engineered for modern educational institutions.",
     image:
       "https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80&auto=format&fit=crop",
-    imageAlt: "Analytics dashboard on a laptop screen",
-    metrics: "41% faster resolution",
+    imageAlt: "Class Management Platform",
+    metrics: "100% Automated Ops",
   },
   {
-    id: "lumen",
-    title: "Lumen — design system",
-    category: "Product · SaaS",
+    id: "caffe-florian",
+    title: "Caffè Florian — Coffee Roastery",
+    category: "Luxury E-Commerce · Brand",
     description:
-      "Unified tokens, components, and documentation that accelerated feature delivery across three product lines.",
+      "A high-end web experience and interactive platform featuring bespoke animations, fluid layouts, and luxury storytelling.",
     image:
-      "https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80&auto=format&fit=crop",
-    imageAlt: "Design workspace with charts and wireframes",
-    metrics: "3× release velocity",
+      "https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=800&q=80&auto=format&fit=crop",
+    imageAlt: "Caffè Florian Boutique Coffee Roastery",
+    metrics: "Sub-Second UX & Speed",
   },
   {
     id: "northline",
