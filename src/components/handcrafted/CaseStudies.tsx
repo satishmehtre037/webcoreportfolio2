@@ -52,115 +52,125 @@ export const CaseStudies: React.FC = () => {
           <Circle className="hidden h-16 w-32 sm:block" color="#6E8F74" />
         </div>
 
-        <div className="mt-16 space-y-24">
+        <div className="mt-16 space-y-16 sm:space-y-24">
           {CASES.map((c, i) => {
             const flip = i % 2 === 1;
 
             return (
-              <Reveal key={c.title}>
-                <article
-                  className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12"
-                  data-testid={`case-${i}`}
-                >
-                  <a
-                    href={c.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={`View live project for ${c.title}`}
-                    className={`group relative block lg:col-span-7 cursor-pointer ${flip ? "lg:order-2" : ""}`}
+              <React.Fragment key={c.title}>
+                {i > 0 && (
+                  <div className="relative py-6 flex items-center justify-center">
+                    <div className="w-full border-t-[3px] border-dashed border-ink/30" />
+                    <span className="absolute rounded-full border-[3px] border-ink bg-ivory px-4 py-1.5 font-mono-plex text-xs uppercase tracking-widest text-wine shadow-brutal font-extrabold select-none">
+                      ✦ Case 0{i + 1} Below ✦
+                    </span>
+                  </div>
+                )}
+                <Reveal>
+                  <article
+                    className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12"
+                    data-testid={`case-${i}`}
                   >
-                    <motion.div
-                      whileHover="hover"
-                      initial="initial"
-                      className="relative w-full"
+                    <a
+                      href={c.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`View live project for ${c.title}`}
+                      className={`group relative block lg:col-span-7 cursor-pointer ${flip ? "lg:order-2" : ""}`}
                     >
                       <motion.div
-                        variants={{
-                          initial: { x: 16, y: 16 },
-                          hover: { x: 24, y: 24 },
-                        }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        className={`absolute inset-0 rounded-2xl border-[3px] border-ink ${c.bg}`}
-                      />
-                      <motion.div
-                        variants={{
-                          initial: { x: 0, y: 0 },
-                          hover: { x: -4, y: -4 },
-                        }}
-                        transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                        className="relative overflow-hidden rounded-2xl border-[3px] border-ink bg-black shadow-brutal-lg"
+                        whileHover="hover"
+                        initial="initial"
+                        className="relative w-full"
                       >
-                        {c.video ? (
-                          <video
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            preload="auto"
-                            src={c.video}
-                            className="h-72 w-full object-cover sm:h-[26rem] transition-transform duration-500 group-hover:scale-105"
-                            ref={(el) => {
-                              if (el) {
-                                el.defaultMuted = true;
-                                el.muted = true;
-                                el.play().catch(() => {});
-                              }
-                            }}
-                          />
-                        ) : (
-                          <motion.img
-                            variants={{
-                              initial: { scale: 1 },
-                              hover: { scale: 1.06 },
-                            }}
-                            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
-                            src={c.img}
-                            alt={c.title}
-                            className="h-72 w-full object-cover sm:h-[26rem]"
-                          />
-                        )}
-                        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent,rgba(0,0,0,0.45))]" />
-                        <span className="absolute left-4 top-4 rounded-full border-[3px] border-ink bg-ivory px-4 py-1.5 font-mono-plex text-xs uppercase tracking-widest text-charcoal shadow-brutal font-bold">
-                          {c.tag}
-                        </span>
-
-                        <div className="absolute inset-0 bg-charcoal/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
-                          <span className="inline-flex items-center gap-2 rounded-xl border-[3px] border-ink bg-ivory px-5 py-2.5 font-display text-sm font-extrabold text-charcoal shadow-brutal">
-                            Open {c.shortName} <ExternalLink size={16} />
+                        <motion.div
+                          variants={{
+                            initial: { x: 16, y: 16 },
+                            hover: { x: 24, y: 24 },
+                          }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                          className={`absolute inset-0 rounded-2xl border-[3px] border-ink ${c.bg}`}
+                        />
+                        <motion.div
+                          variants={{
+                            initial: { x: 0, y: 0 },
+                            hover: { x: -4, y: -4 },
+                          }}
+                          transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                          className="relative overflow-hidden rounded-2xl border-[3px] border-ink bg-black shadow-brutal-lg"
+                        >
+                          {c.video ? (
+                            <video
+                              autoPlay
+                              loop
+                              muted
+                              playsInline
+                              preload="auto"
+                              src={c.video}
+                              className="h-72 w-full object-cover sm:h-[26rem] transition-transform duration-500 group-hover:scale-105"
+                              ref={(el) => {
+                                if (el) {
+                                  el.defaultMuted = true;
+                                  el.muted = true;
+                                  el.play().catch(() => {});
+                                }
+                              }}
+                            />
+                          ) : (
+                            <motion.img
+                              variants={{
+                                initial: { scale: 1 },
+                                hover: { scale: 1.06 },
+                              }}
+                              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] as const }}
+                              src={c.img}
+                              alt={c.title}
+                              className="h-72 w-full object-cover sm:h-[26rem]"
+                            />
+                          )}
+                          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_40%,transparent,rgba(0,0,0,0.45))]" />
+                          <span className="absolute left-4 top-4 rounded-full border-[3px] border-ink bg-ivory px-4 py-1.5 font-mono-plex text-xs uppercase tracking-widest text-charcoal shadow-brutal font-bold">
+                            {c.tag}
                           </span>
-                        </div>
+
+                          <div className="absolute inset-0 bg-charcoal/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100 flex items-center justify-center">
+                            <span className="inline-flex items-center gap-2 rounded-xl border-[3px] border-ink bg-ivory px-5 py-2.5 font-display text-sm font-extrabold text-charcoal shadow-brutal">
+                              Open {c.shortName} <ExternalLink size={16} />
+                            </span>
+                          </div>
+                        </motion.div>
                       </motion.div>
-                    </motion.div>
-                  </a>
+                    </a>
 
-                  <div
-                    className={`lg:col-span-5 ${
-                      flip ? "lg:order-1 lg:pr-6" : "lg:pl-6"
-                    }`}
-                  >
-                    <span className="font-hand text-3xl text-wine">
-                      Case 0{i + 1}
-                    </span>
-                    <h3 className="mt-2 font-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl text-charcoal">
-                      {c.title}
-                    </h3>
-                    <p className="mt-4 text-charcoal/75 font-body leading-relaxed">{c.body}</p>
+                    <div
+                      className={`lg:col-span-5 ${
+                        flip ? "lg:order-1 lg:pr-6" : "lg:pl-6"
+                      }`}
+                    >
+                      <span className="font-hand text-3xl text-wine">
+                        Case 0{i + 1}
+                      </span>
+                      <h3 className="mt-2 font-display text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl text-charcoal">
+                        {c.title}
+                      </h3>
+                      <p className="mt-4 text-charcoal/75 font-body leading-relaxed">{c.body}</p>
 
-                    <div className="mt-8">
-                      <BrutalButton
-                        as="a"
-                        href={c.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        variant="wine"
-                        data-testid={`case-cta-${i}`}
-                      >
-                        View Live Project — {c.shortName} <ArrowUpRight size={16} />
-                      </BrutalButton>
+                      <div className="mt-8">
+                        <BrutalButton
+                          as="a"
+                          href={c.link}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          variant="wine"
+                          data-testid={`case-cta-${i}`}
+                        >
+                          View Live Project — {c.shortName} <ArrowUpRight size={16} />
+                        </BrutalButton>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              </Reveal>
+                  </article>
+                </Reveal>
+              </React.Fragment>
             );
           })}
         </div>
