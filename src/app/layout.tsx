@@ -49,6 +49,16 @@ export const metadata: Metadata = {
     description:
       "Craft over templates. Handcrafted web platforms, AI copilots and brand systems.",
   },
+  keywords: [
+    "Web Development Studio",
+    "Custom AI Copilots",
+    "Software Engineering Agency",
+    "Next.js Developers",
+    "High Performance Web Platforms",
+    "UI UX Design",
+    "SaaS Platform Development",
+    "WebCore Studio",
+  ],
   robots: {
     index: true,
     follow: true,
@@ -70,9 +80,54 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: "WebCore Studio",
+    url: "https://webcorestudio.vercel.app",
+    logo: "https://webcorestudio.vercel.app/webcore-logo-mark.svg",
+    description:
+      "Handcrafted digital products, custom AI copilots, high-performance web platforms and brand systems for ambitious companies.",
+    sameAs: [
+      "https://linkedin.com/company/webcore",
+      "https://github.com/webcore",
+    ],
+    hasOfferCatalog: {
+      "@type": "OfferCatalog",
+      name: "Software & AI Services",
+      itemListElement: [
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "Custom Web Platform Development",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "AI Copilots & Integration",
+          },
+        },
+        {
+          "@type": "Offer",
+          itemOffered: {
+            "@type": "Service",
+            name: "UI/UX & Brand Systems",
+          },
+        },
+      ],
+    },
+  };
+
   return (
     <html lang="en">
       <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-JR6CHNH379"
