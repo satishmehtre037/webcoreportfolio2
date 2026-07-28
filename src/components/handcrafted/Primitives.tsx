@@ -116,13 +116,8 @@ export const Overline: React.FC<OverlineProps> = ({
   className = "",
 }) => (
   <span
-    className={`inline-flex items-center gap-2 font-mono-plex text-xs uppercase tracking-[0.25em] text-wine ${className}`}
+    className={`inline-flex items-center font-mono-plex text-xs uppercase tracking-[0.25em] text-wine ${className}`}
   >
-    <motion.span
-      className="h-2 w-2 rounded-full bg-wine"
-      animate={{ scale: [1, 1.4, 1], opacity: [0.7, 1, 0.7] }}
-      transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-    />
     {children}
   </span>
 );
