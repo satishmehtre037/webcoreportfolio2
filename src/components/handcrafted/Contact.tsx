@@ -5,7 +5,7 @@ import { ArrowUpRight, MessageSquare, CheckCircle2 } from "lucide-react";
 import { Overline, Reveal, BrutalButton } from "./Primitives";
 import { Asterisk, CurvedArrow } from "./Doodles";
 
-const BUDGETS = ["₹25k – ₹75k", "₹75k – ₹2L", "₹2L – ₹5L", "₹5L+ ($6k+)"];
+const BUDGETS = ["₹5k – ₹10k", "₹10k – ₹15k", "₹15k – ₹20k", "₹20k+ / Custom"];
 const SERVICES = ["Fullstack Web App", "AI & Automation", "SaaS Platform", "UI/UX & Web"];
 
 export const Contact: React.FC = () => {
@@ -14,7 +14,7 @@ export const Contact: React.FC = () => {
     email: "",
     phone: "",
     company: "",
-    budget: "₹75k – ₹2L",
+    budget: "₹10k – ₹15k",
     service: "Fullstack Web App",
     message: "",
   });
@@ -57,7 +57,7 @@ export const Contact: React.FC = () => {
           email: "",
           phone: "",
           company: "",
-          budget: "₹75k – ₹2L",
+          budget: "₹10k – ₹15k",
           service: "Fullstack Web App",
           message: "",
         });
@@ -163,7 +163,7 @@ export const Contact: React.FC = () => {
                         className={inputClass}
                         value={form.name}
                         onChange={set("name")}
-                        placeholder="Satish Mehta"
+                        placeholder="Enter your full name"
                         data-testid="contact-name"
                         required
                       />
@@ -177,7 +177,7 @@ export const Contact: React.FC = () => {
                         className={inputClass}
                         value={form.email}
                         onChange={set("email")}
-                        placeholder="satish@company.com"
+                        placeholder="Enter your email address"
                         data-testid="contact-email"
                         required
                       />
@@ -194,7 +194,7 @@ export const Contact: React.FC = () => {
                         className={inputClass}
                         value={form.phone}
                         onChange={set("phone")}
-                        placeholder="+91 87798 41346"
+                        placeholder="Enter your phone or WhatsApp number"
                         data-testid="contact-phone"
                       />
                     </div>
@@ -206,7 +206,7 @@ export const Contact: React.FC = () => {
                         className={inputClass}
                         value={form.company}
                         onChange={set("company")}
-                        placeholder="WebCore / Startup Name"
+                        placeholder="Enter your company or brand name"
                         data-testid="contact-company"
                       />
                     </div>
@@ -235,10 +235,10 @@ export const Contact: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Budget Selection (INR / USD) */}
+                  {/* Budget Selection (INR) */}
                   <div>
                     <label className="mb-2 block font-mono-plex text-xs uppercase tracking-widest text-charcoal font-bold">
-                      Estimated Budget (INR / USD)
+                      Estimated Budget (INR)
                     </label>
                     <div className="flex flex-wrap gap-2">
                       {BUDGETS.map((b) => (
@@ -261,14 +261,14 @@ export const Contact: React.FC = () => {
 
                   <div>
                     <label className="mb-2 block font-mono-plex text-xs uppercase tracking-widest text-charcoal font-bold">
-                      Project Brief / Goals *
+                      Website Requirements / Goals *
                     </label>
                     <textarea
                       rows={4}
                       className={inputClass}
                       value={form.message}
                       onChange={set("message")}
-                      placeholder="Tell us what you're building, target timeline, or features needed..."
+                      placeholder="Describe your website requirements, target features, pages needed, or goals..."
                       data-testid="contact-message"
                       required
                     />
