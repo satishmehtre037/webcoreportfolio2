@@ -7,43 +7,49 @@ import { Star, Squiggle } from "./Doodles";
 
 const COL1 = [
   {
-    title: "Aster Copilot",
-    category: "AI E-Commerce",
-    img: "https://images.unsplash.com/photo-1695479044464-67299fa84782?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
+    title: "Education Ops",
+    category: "Fullstack Web App",
+    img: "/images/hero_showcase_1.png",
     color: "bg-sage",
+    link: "https://rkdeamy.vercel.app",
   },
   {
     title: "Caffè Florian",
-    category: "Boutique Roastery",
-    img: "https://images.unsplash.com/photo-1442512595331-e89e73853f31?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
+    category: "Luxury E-Commerce",
+    img: "/images/hero_showcase_2.png",
     color: "bg-wine text-ivory",
+    link: "https://caffe-florian.vercel.app",
   },
   {
-    title: "Monolith Intelligence",
-    category: "LLM Systems",
-    img: "https://images.unsplash.com/photo-1781116780189-85387493f7e2?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
+    title: "WebCore Order Agent",
+    category: "AI Automation",
+    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
     color: "bg-ivory",
+    link: "https://rkdeamy.vercel.app",
   },
 ];
 
 const COL2 = [
   {
-    title: "Kairo Mobile",
-    category: "Design System",
-    img: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
+    title: "ClinicOS SaaS",
+    category: "Healthcare Platform",
+    img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
     color: "bg-forest text-ivory",
+    link: "https://caffe-florian.vercel.app",
   },
   {
-    title: "Aura Skincare",
-    category: "Brand & Web",
-    img: "https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
-    color: "bg-sage",
-  },
-  {
-    title: "Vortex Analytics",
-    category: "Realtime Data",
+    title: "Nexus Analytics",
+    category: "Realtime Dashboard",
     img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
+    color: "bg-sage",
+    link: "https://rkdeamy.vercel.app",
+  },
+  {
+    title: "Oxblood Heritage",
+    category: "Brutal UI System",
+    img: "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
     color: "bg-white",
+    link: "https://caffe-florian.vercel.app",
   },
 ];
 
@@ -63,7 +69,7 @@ export const VerticalShowcase: React.FC = () => {
               Crafted in detail. <span className="text-wine">Built for speed.</span>
             </h2>
             <p className="mt-6 text-charcoal/75 font-body text-lg leading-relaxed">
-              Explore a living reel of our recent product launches — from custom LLM interfaces to spatial audio design systems.
+              Explore a living reel of our fullstack web applications, AI automation tools, e-commerce engines, and design systems.
             </p>
 
             <div className="mt-8 flex items-center gap-4">
@@ -90,27 +96,33 @@ export const VerticalShowcase: React.FC = () => {
                 className="flex flex-col gap-4"
               >
                 {[...COL1, ...COL1].map((item, idx) => (
-                  <motion.div
+                  <a
                     key={idx}
-                    whileHover={{ scale: 1.03 }}
-                    className={`group relative overflow-hidden rounded-2xl border-[3px] border-ink ${item.color} p-3 shadow-brutal transition-shadow hover:shadow-brutal-lg cursor-pointer`}
+                    href={item.link}
+                    target={item.link.startsWith("http") ? "_blank" : undefined}
+                    rel={item.link.startsWith("http") ? "noopener noreferrer" : undefined}
                   >
-                    <div className="overflow-hidden rounded-xl border-[2px] border-ink bg-black">
-                      <img
-                        src={item.img}
-                        alt={item.title}
-                        className="h-44 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="mt-3 flex items-center justify-between px-1">
-                      <span className="font-display font-bold text-sm">
-                        {item.title}
-                      </span>
-                      <span className="font-mono-plex text-[0.65rem] uppercase tracking-widest opacity-80">
-                        {item.category}
-                      </span>
-                    </div>
-                  </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      className={`group relative overflow-hidden rounded-2xl border-[3px] border-ink ${item.color} p-3 shadow-brutal transition-shadow hover:shadow-brutal-lg cursor-pointer`}
+                    >
+                      <div className="overflow-hidden rounded-xl border-[2px] border-ink bg-black">
+                        <img
+                          src={item.img}
+                          alt={item.title}
+                          className="h-44 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="mt-3 flex items-center justify-between px-1">
+                        <span className="font-display font-bold text-sm">
+                          {item.title}
+                        </span>
+                        <span className="font-mono-plex text-[0.65rem] uppercase tracking-widest opacity-80">
+                          {item.category}
+                        </span>
+                      </div>
+                    </motion.div>
+                  </a>
                 ))}
               </motion.div>
 
@@ -125,27 +137,33 @@ export const VerticalShowcase: React.FC = () => {
                 className="flex flex-col gap-4"
               >
                 {[...COL2, ...COL2].map((item, idx) => (
-                  <motion.div
+                  <a
                     key={idx}
-                    whileHover={{ scale: 1.03 }}
-                    className={`group relative overflow-hidden rounded-2xl border-[3px] border-ink ${item.color} p-3 shadow-brutal transition-shadow hover:shadow-brutal-lg cursor-pointer`}
+                    href={item.link}
+                    target={item.link.startsWith("http") ? "_blank" : undefined}
+                    rel={item.link.startsWith("http") ? "noopener noreferrer" : undefined}
                   >
-                    <div className="overflow-hidden rounded-xl border-[2px] border-ink bg-black">
-                      <img
-                        src={item.img}
-                        alt={item.title}
-                        className="h-44 w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="mt-3 flex items-center justify-between px-1">
-                      <span className="font-display font-bold text-sm">
-                        {item.title}
-                      </span>
-                      <span className="font-mono-plex text-[0.65rem] uppercase tracking-widest opacity-80">
-                        {item.category}
-                      </span>
-                    </div>
-                  </motion.div>
+                    <motion.div
+                      whileHover={{ scale: 1.03 }}
+                      className={`group relative overflow-hidden rounded-2xl border-[3px] border-ink ${item.color} p-3 shadow-brutal transition-shadow hover:shadow-brutal-lg cursor-pointer`}
+                    >
+                      <div className="overflow-hidden rounded-xl border-[2px] border-ink bg-black">
+                        <img
+                          src={item.img}
+                          alt={item.title}
+                          className="h-44 w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        />
+                      </div>
+                      <div className="mt-3 flex items-center justify-between px-1">
+                        <span className="font-display font-bold text-sm">
+                          {item.title}
+                        </span>
+                        <span className="font-mono-plex text-[0.65rem] uppercase tracking-widest opacity-80">
+                          {item.category}
+                        </span>
+                      </div>
+                    </motion.div>
+                  </a>
                 ))}
               </motion.div>
             </div>
