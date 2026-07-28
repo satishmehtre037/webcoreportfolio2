@@ -328,7 +328,7 @@ export const Hero: React.FC = () => {
             ◆ 98% client retention
           </motion.span>
           <motion.span whileHover={{ scale: 1.05 }} className="text-wine font-bold cursor-pointer">
-            ◆ Est. 2019
+            ◆ Est. 2025
           </motion.span>
         </motion.div>
       </div>
