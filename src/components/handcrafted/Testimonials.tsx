@@ -5,19 +5,16 @@ const QUOTES = [
   {
     q: "WebCore built our fullstack class management platform in record time. The speed, design aesthetic, and attention to detail felt like working with an elite founding team in Bengaluru.",
     name: "Aarav Sharma",
-    role: "Founder & CEO, EduOps India",
     tone: "bg-white",
   },
   {
     q: "The most opinionated, luxury-focused studio we've worked with. Everything they crafted for Caffè Florian looks world-class, fluid, and deeply intentional.",
     name: "Rohan Mehta",
-    role: "Co-Founder, Caffè Florian",
     tone: "bg-sage",
   },
   {
     q: "They treat design system craft and fullstack architecture with absolute perfection. Transparent communication and stunning execution from day one.",
     name: "Priya Nair",
-    role: "VP of Product, TechVedic",
     tone: "bg-white",
   },
 ];
@@ -47,12 +44,7 @@ export const Testimonials: React.FC = () => {
                   <span className="grid h-10 w-10 place-items-center rounded-full border-[3px] border-ink bg-wine font-display font-bold text-ivory">
                     {t.name[0]}
                   </span>
-                  <span>
-                    <span className="block font-bold text-charcoal">{t.name}</span>
-                    <span className="block font-mono-plex text-xs uppercase tracking-widest opacity-70">
-                      {t.role}
-                    </span>
-                  </span>
+                  <span className="font-bold text-charcoal">{t.name}</span>
                 </figcaption>
               </figure>
             </Reveal>
