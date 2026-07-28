@@ -9,7 +9,6 @@ const LINKS = [
   { label: "Work", href: "#work" },
   { label: "Services", href: "#services" },
   { label: "Manifesto", href: "#manifesto" },
-  { label: "Studio", href: "#studio" },
 ];
 
 export const AnimatedWLogo: React.FC<{ borderColor?: string }> = ({ borderColor = "border-ink" }) => {

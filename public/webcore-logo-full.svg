@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400" fill="none">
+  <g transform="translate(40, 40)">
+    <rect width="320" height="320" rx="70" fill="#7A2E3A"/>
+    <rect x="15" y="15" width="290" height="290" rx="55" stroke="#111111" stroke-width="30"/>
+    <path d="M 60 90 L 110 230 L 160 120 L 210 230 L 260 90" stroke="#FDF5E6" stroke-width="38" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="410" y="235" font-family="'Syne', 'DM Sans', sans-serif" font-weight="800" font-size="140" fill="#111111" letter-spacing="-3">WebCore</text>
+</svg>

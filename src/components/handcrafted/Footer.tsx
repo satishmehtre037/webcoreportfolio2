@@ -7,7 +7,7 @@ import { Squiggle } from "./Doodles";
 const COLS = [
   {
     title: "Studio",
-    links: ["Work", "Services", "Manifesto", "Studio"],
+    links: ["Work", "Services", "Manifesto"],
   },
   {
     title: "Connect",

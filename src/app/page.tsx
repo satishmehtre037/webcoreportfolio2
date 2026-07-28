@@ -8,7 +8,6 @@ import { Hero } from "@/components/handcrafted/Hero";
 import { Marquee } from "@/components/handcrafted/Marquee";
 import { Services } from "@/components/handcrafted/Services";
 import { CaseStudies } from "@/components/handcrafted/CaseStudies";
-import { Studio } from "@/components/handcrafted/Studio";
 import { Manifesto } from "@/components/handcrafted/Manifesto";
 import { Testimonials } from "@/components/handcrafted/Testimonials";
 import { VerticalShowcase } from "@/components/handcrafted/VerticalShowcase";
@@ -73,7 +72,6 @@ export default function Page() {
       <Marquee />
       <Services />
       <CaseStudies />
-      <Studio />
       <Manifesto />
       <Testimonials />
       <VerticalShowcase />
