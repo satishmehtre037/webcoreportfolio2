@@ -3,21 +3,21 @@ import { Overline, Reveal } from "./Primitives";
 
 const QUOTES = [
   {
-    q: "WebCore shipped our AI copilot in six weeks. It felt like hiring a founding team, not an agency.",
-    name: "Maya Osei",
-    role: "CEO, Aster",
+    q: "WebCore built our fullstack class management platform in record time. The speed, design aesthetic, and attention to detail felt like working with an elite founding team in Bengaluru.",
+    name: "Aarav Sharma",
+    role: "Founder & CEO, EduOps India",
     tone: "bg-white",
   },
   {
-    q: "The most opinionated, least generic studio we've worked with. Everything they touch looks intentional.",
-    name: "Daniel Reeve",
-    role: "CPO, Resonar",
+    q: "The most opinionated, luxury-focused studio we've worked with. Everything they crafted for Caffè Florian looks world-class, fluid, and deeply intentional.",
+    name: "Rohan Mehta",
+    role: "Co-Founder, Caffè Florian",
     tone: "bg-sage",
   },
   {
-    q: "They treat evals and design with the same seriousness. Rare and exactly what we needed.",
-    name: "Lena Brandt",
-    role: "VP Eng, Northwind",
+    q: "They treat design system craft and fullstack architecture with absolute perfection. Transparent communication and stunning execution from day one.",
+    name: "Priya Nair",
+    role: "VP of Product, TechVedic",
     tone: "bg-white",
   },
 ];
