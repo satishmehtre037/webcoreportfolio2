@@ -31,11 +31,11 @@ const COL1 = [
 
 const COL2 = [
   {
-    title: "ClinicOS SaaS",
-    category: "Healthcare Platform",
-    img: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
+    title: "Elixir Salon",
+    category: "Luxury Spa & Artistry",
+    img: "https://images.unsplash.com/photo-1560066984-138dadb4c035?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
     color: "bg-forest text-ivory",
-    link: "https://caffe-florian.vercel.app",
+    link: "https://saloon-drab-five.vercel.app",
   },
   {
     title: "Nexus Analytics",

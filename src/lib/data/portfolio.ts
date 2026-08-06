@@ -24,6 +24,17 @@ export const portfolioProjects: PortfolioProject[] = [
     metrics: "Sub-Second UX & Speed",
   },
   {
+    id: "elixir-salon",
+    title: "Elixir — Bespoke Hair Artistry & Botanical Spa",
+    category: "Luxury Salon · Wellness",
+    description:
+      "A luxury web experience and interactive booking platform engineered for Elixir Salon, featuring bespoke hair artistry showcases and botanical spa visual identity.",
+    image:
+      "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=800&q=80&auto=format&fit=crop",
+    imageAlt: "Elixir Luxury Salon & Botanical Spa",
+    metrics: "Sub-Second UX & Booking Ops",
+  },
+  {
     id: "northline",
     title: "Northline — commerce platform",
     category: "Platform · Retail",

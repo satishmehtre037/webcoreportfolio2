@@ -36,6 +36,15 @@ const CASES: CaseStudy[] = [
     bg: "bg-wine text-ivory",
     link: "https://caffe-florian.vercel.app",
   },
+  {
+    tag: "Bespoke Salon & Botanical Spa",
+    title: "Elixir — Bespoke Hair Artistry & Botanical Spa",
+    shortName: "Elixir Salon",
+    body: "A luxury web experience and interactive booking platform engineered for Elixir Salon, featuring bespoke hair artistry showcases, botanical spa visual identity, fluid layouts, and elevated service storytelling.",
+    video: "/videos/work_case_3.mp4",
+    bg: "bg-forest text-ivory",
+    link: "https://saloon-drab-five.vercel.app",
+  },
 ];
 
 export const CaseStudies: React.FC = () => {
