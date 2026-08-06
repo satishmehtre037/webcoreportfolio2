@@ -21,11 +21,11 @@ const COL1 = [
     link: "https://caffe-florian.vercel.app",
   },
   {
-    title: "WebCore Order Agent",
-    category: "AI Automation",
-    img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
-    color: "bg-ivory",
-    link: "https://rkdeamy.vercel.app",
+    title: "Benne & Spice",
+    category: "South Indian Dining",
+    img: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?crop=entropy&cs=srgb&fm=jpg&q=85&w=700",
+    color: "bg-sage text-charcoal",
+    link: "https://benne-delta.vercel.app/",
   },
 ];
 

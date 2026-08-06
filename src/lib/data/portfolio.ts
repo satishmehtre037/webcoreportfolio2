@@ -35,6 +35,17 @@ export const portfolioProjects: PortfolioProject[] = [
     metrics: "Sub-Second UX & Booking Ops",
   },
   {
+    id: "benne-spice",
+    title: "Benne & Spice — Cultural South Indian Dining",
+    category: "Heritage Dining · Culinary Brand",
+    description:
+      "An immersive digital experience and interactive brand showcase engineered for Benne & Spice, featuring scroll-driven animations and authentic culinary storytelling.",
+    image:
+      "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=800&q=80&auto=format&fit=crop",
+    imageAlt: "Benne & Spice South Indian Dining",
+    metrics: "Scroll-Driven Micro Animations",
+  },
+  {
     id: "northline",
     title: "Northline — commerce platform",
     category: "Platform · Retail",

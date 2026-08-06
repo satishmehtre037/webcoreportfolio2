@@ -45,6 +45,15 @@ const CASES: CaseStudy[] = [
     bg: "bg-forest text-ivory",
     link: "https://saloon-drab-five.vercel.app",
   },
+  {
+    tag: "Cultural Dining & Heritage Brand",
+    title: "Benne & Spice — Cultural South Indian Dining",
+    shortName: "Benne & Spice",
+    body: "An immersive digital experience and interactive brand showcase engineered for Benne & Spice, featuring scroll-driven animations, rich heritage storytelling, fluid layouts, and authentic South Indian culinary aesthetics.",
+    video: "/videos/work_case_4.mp4",
+    bg: "bg-sage text-charcoal",
+    link: "https://benne-delta.vercel.app/",
+  },
 ];
 
 export const CaseStudies: React.FC = () => {
