@@ -8,6 +8,7 @@ import {
   PlusCircle,
   UserCheck,
   UserX,
+  Trash2,
   X,
   Building2,
   Mail,
@@ -17,7 +18,7 @@ import {
 } from 'lucide-react';
 
 export default function ManageInternsPage() {
-  const { interns, leads, commissions, addIntern, updateInternStatus } = usePortal();
+  const { interns, leads, commissions, addIntern, updateInternStatus, deleteIntern } = usePortal();
 
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [name, setName] = useState('');
@@ -143,21 +144,35 @@ export default function ManageInternsPage() {
                         {intern.joined_date}
                       </td>
                       <td className="px-4 py-4 text-right">
-                        {intern.status === 'active' ? (
+                        <div className="flex items-center justify-end gap-2">
+                          {intern.status === 'active' ? (
+                            <button
+                              onClick={() => updateInternStatus(intern.id, 'inactive')}
+                              className="inline-flex items-center gap-1 rounded-lg border border-amber-500/30 bg-amber-500/10 px-2.5 py-1 text-xs font-medium text-amber-300 hover:bg-amber-500/20"
+                            >
+                              <UserX className="h-3.5 w-3.5" /> Deactivate
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => updateInternStatus(intern.id, 'active')}
+                              className="inline-flex items-center gap-1 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-300 hover:bg-emerald-500/20"
+                            >
+                              <UserCheck className="h-3.5 w-3.5" /> Activate
+                            </button>
+                          )}
+
                           <button
-                            onClick={() => updateInternStatus(intern.id, 'inactive')}
+                            onClick={() => {
+                              if (confirm(`Are you sure you want to permanently delete intern ${intern.name} (${intern.intern_id})?`)) {
+                                deleteIntern(intern.id);
+                              }
+                            }}
+                            title="Permanently Delete Intern"
                             className="inline-flex items-center gap-1 rounded-lg border border-red-500/30 bg-red-500/10 px-2.5 py-1 text-xs font-medium text-red-400 hover:bg-red-500/20"
                           >
-                            <UserX className="h-3.5 w-3.5" /> Deactivate
+                            <Trash2 className="h-3.5 w-3.5" /> Delete
                           </button>
-                        ) : (
-                          <button
-                            onClick={() => updateInternStatus(intern.id, 'active')}
-                            className="inline-flex items-center gap-1 rounded-lg border border-emerald-500/30 bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-300 hover:bg-emerald-500/20"
-                          >
-                            <UserCheck className="h-3.5 w-3.5" /> Activate
-                          </button>
-                        )}
+                        </div>
                       </td>
                     </tr>
                   );

@@ -28,6 +28,7 @@ interface PortalContextType {
   logout: () => void;
   addIntern: (data: { name: string; email: string; college?: string; phone?: string; password?: string }) => Promise<void>;
   updateInternStatus: (id: string, status: 'active' | 'inactive') => Promise<void>;
+  deleteIntern: (id: string) => Promise<void>;
   updatePassword: (newPassword: string) => Promise<{ success: boolean; error?: string }>;
   addLead: (leadData: Omit<Lead, 'id' | 'intern_id' | 'status' | 'submitted_at' | 'updated_at'>) => Promise<string>;
   updateLeadStatus: (leadId: string, status: LeadStatus, projectAmount?: number) => Promise<void>;
@@ -459,6 +460,18 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     syncState(updated);
   };
 
+  const deleteIntern = async (id: string) => {
+    const updated = interns.filter((i) => i.id !== id && i.intern_id !== id);
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.from('interns').delete().or(`id.eq.${id},intern_id.eq.${id}`);
+      } catch (err) {
+        console.error('Failed to delete intern from Supabase:', err);
+      }
+    }
+    syncState(updated);
+  };
+
   const addLead = async (
     leadData: Omit<Lead, 'id' | 'intern_id' | 'status' | 'submitted_at' | 'updated_at'>
   ): Promise<string> => {
@@ -652,6 +665,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
         logout,
         addIntern,
         updateInternStatus,
+        deleteIntern,
         updatePassword,
         addLead,
         updateLeadStatus,
