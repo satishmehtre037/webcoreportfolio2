@@ -94,11 +94,75 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
             supabase.from('announcements').select('*').order('created_at', { ascending: false }),
           ]);
 
-          setInterns(intData || []);
-          setLeads(leadData || []);
-          setCommissions(commData || []);
-          setWeeklyReports(repData || []);
-          setAnnouncements(annData || []);
+          // Read local storage fallbacks to merge with Supabase data
+          const localIntStr = localStorage.getItem('wc_interns');
+          const localLeadsStr = localStorage.getItem('wc_leads');
+          const localCommsStr = localStorage.getItem('wc_commissions');
+          const localRepsStr = localStorage.getItem('wc_reports');
+          const localAnnsStr = localStorage.getItem('wc_announcements');
+
+          let localInts: Intern[] = localIntStr ? JSON.parse(localIntStr) : [];
+          localInts = localInts.filter(
+            (i) => i.intern_id !== 'WC-BD-001' && i.intern_id !== 'WC-BD-002' && i.intern_id !== 'WC-BD-003'
+          );
+
+          let localLeads: Lead[] = localLeadsStr ? JSON.parse(localLeadsStr) : [];
+          localLeads = localLeads.filter(
+            (l) => l.intern_id !== 'WC-BD-001' && l.intern_id !== 'WC-BD-002' && l.intern_id !== 'WC-BD-003'
+          );
+
+          let localComms: Commission[] = localCommsStr ? JSON.parse(localCommsStr) : [];
+          localComms = localComms.filter(
+            (c) => c.intern_id !== 'WC-BD-001' && c.intern_id !== 'WC-BD-002' && c.intern_id !== 'WC-BD-003'
+          );
+
+          const localReps: WeeklyReport[] = localRepsStr ? JSON.parse(localRepsStr) : [];
+          const localAnns: Announcement[] = localAnnsStr ? JSON.parse(localAnnsStr) : [];
+
+          // Merge interns
+          const dbInts = intData || [];
+          const internMap = new Map<string, Intern>();
+          localInts.forEach((item) => internMap.set(item.intern_id || item.id, item));
+          dbInts.forEach((item) => internMap.set(item.intern_id || item.id, item));
+          const mergedInts = Array.from(internMap.values());
+          setInterns(mergedInts);
+          localStorage.setItem('wc_interns', JSON.stringify(mergedInts));
+
+          // Merge leads
+          const dbLeads = leadData || [];
+          const leadMap = new Map<string, Lead>();
+          localLeads.forEach((item) => leadMap.set(item.id, item));
+          dbLeads.forEach((item) => leadMap.set(item.id, item));
+          const mergedLeads = Array.from(leadMap.values());
+          setLeads(mergedLeads);
+          localStorage.setItem('wc_leads', JSON.stringify(mergedLeads));
+
+          // Merge commissions
+          const dbComms = commData || [];
+          const commMap = new Map<string, Commission>();
+          localComms.forEach((item) => commMap.set(item.id, item));
+          dbComms.forEach((item) => commMap.set(item.id, item));
+          const mergedComms = Array.from(commMap.values());
+          setCommissions(mergedComms);
+          localStorage.setItem('wc_commissions', JSON.stringify(mergedComms));
+
+          // Merge reports
+          const dbReps = repData || [];
+          const repMap = new Map<string, WeeklyReport>();
+          localReps.forEach((item) => repMap.set(item.id, item));
+          dbReps.forEach((item) => repMap.set(item.id, item));
+          const mergedReps = Array.from(repMap.values());
+          setWeeklyReports(mergedReps);
+          localStorage.setItem('wc_reports', JSON.stringify(mergedReps));
+
+          // Merge announcements
+          const dbAnns = annData || [];
+          const annMap = new Map<string, Announcement>();
+          localAnns.forEach((item) => annMap.set(item.id, item));
+          dbAnns.forEach((item) => annMap.set(item.id, item));
+          const mergedAnns = Array.from(annMap.values());
+          setAnnouncements(mergedAnns);
+          localStorage.setItem('wc_announcements', JSON.stringify(mergedAnns));
         } catch (err) {
           console.warn('Supabase fetch failed, using local fallback:', err);
           loadLocalFallback();
