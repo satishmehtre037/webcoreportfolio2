@@ -99,15 +99,70 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       const localReps: WeeklyReport[] = localRepsStr ? JSON.parse(localRepsStr) : [];
       const localAnns: Announcement[] = localAnnsStr ? JSON.parse(localAnnsStr) : [];
 
+      const isUUID = (str: string) =>
+        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
+
       const dbInts = intData || [];
-      // Auto-migrate local interns to Supabase DB if missing in cloud
       const dbIntsMap = new Map(dbInts.map((i) => [i.id, i]));
       for (const item of localInts) {
         if (!dbIntsMap.has(item.id)) {
           try {
+            if (!isUUID(item.id)) item.id = crypto.randomUUID();
             await supabase.from('interns').upsert(item);
           } catch (e) {
             console.error('Failed to sync local intern to cloud:', e);
+          }
+        }
+      }
+
+      const dbLeads = leadData || [];
+      const dbLeadsMap = new Map(dbLeads.map((l) => [l.id, l]));
+      for (const item of localLeads) {
+        if (!dbLeadsMap.has(item.id)) {
+          try {
+            if (!isUUID(item.id)) item.id = crypto.randomUUID();
+            await supabase.from('leads').upsert(item);
+          } catch (e) {
+            console.error('Failed to sync local lead to cloud:', e);
+          }
+        }
+      }
+
+      const dbComms = commData || [];
+      const dbCommsMap = new Map(dbComms.map((c) => [c.id, c]));
+      for (const item of localComms) {
+        if (!dbCommsMap.has(item.id)) {
+          try {
+            if (!isUUID(item.id)) item.id = crypto.randomUUID();
+            await supabase.from('commissions').upsert(item);
+          } catch (e) {
+            console.error('Failed to sync local commission to cloud:', e);
+          }
+        }
+      }
+
+      const dbReps = repData || [];
+      const dbRepsMap = new Map(dbReps.map((r) => [r.id, r]));
+      for (const item of localReps) {
+        if (!dbRepsMap.has(item.id)) {
+          try {
+            if (!isUUID(item.id)) item.id = crypto.randomUUID();
+            await supabase.from('weekly_reports').upsert(item);
+          } catch (e) {
+            console.error('Failed to sync local report to cloud:', e);
+          }
+        }
+      }
+
+      const dbAnns = annData || [];
+      const dbAnnsMap = new Map(dbAnns.map((a) => [a.id, a]));
+      for (const item of localAnns) {
+        if (!dbAnnsMap.has(item.id)) {
+          try {
+            if (!isUUID(item.id)) item.id = crypto.randomUUID();
+            await supabase.from('announcements').upsert(item);
+          } catch (e) {
+            console.error('Failed to sync local announcement to cloud:', e);
           }
         }
       }
@@ -121,7 +176,6 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('wc_interns', JSON.stringify(mergedInts));
 
       // Merge leads
-      const dbLeads = leadData || [];
       const leadMap = new Map<string, Lead>();
       localLeads.forEach((item) => leadMap.set(item.id, item));
       dbLeads.forEach((item) => leadMap.set(item.id, item));
@@ -130,7 +184,6 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('wc_leads', JSON.stringify(mergedLeads));
 
       // Merge commissions
-      const dbComms = commData || [];
       const commMap = new Map<string, Commission>();
       localComms.forEach((item) => commMap.set(item.id, item));
       dbComms.forEach((item) => commMap.set(item.id, item));
@@ -139,7 +192,6 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('wc_commissions', JSON.stringify(mergedComms));
 
       // Merge reports
-      const dbReps = repData || [];
       const repMap = new Map<string, WeeklyReport>();
       localReps.forEach((item) => repMap.set(item.id, item));
       dbReps.forEach((item) => repMap.set(item.id, item));
@@ -148,7 +200,6 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('wc_reports', JSON.stringify(mergedReps));
 
       // Merge announcements
-      const dbAnns = annData || [];
       const annMap = new Map<string, Announcement>();
       localAnns.forEach((item) => annMap.set(item.id, item));
       dbAnns.forEach((item) => annMap.set(item.id, item));
@@ -413,7 +464,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
   ): Promise<string> => {
     if (!currentUser) throw new Error('Not logged in');
 
-    const leadId = `lead-${Date.now().toString().slice(-6)}`;
+    const leadId = crypto.randomUUID();
     const newLead: Lead = {
       ...leadData,
       id: leadId,
