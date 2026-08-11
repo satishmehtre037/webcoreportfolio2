@@ -94,6 +94,28 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
 
       // Clean interns from DB
       const cleanInts = (intData || []).filter((i) => !isDeletedIntern(i));
+
+      // Preserve local unsynced interns if cloud DB doesn't have them yet
+      const cloudInternIds = new Set(cleanInts.map((i) => i.id));
+      const localIntsStr = localStorage.getItem('wc_interns');
+      if (localIntsStr) {
+        try {
+          const localParsed: Intern[] = JSON.parse(localIntsStr);
+          for (const loc of localParsed) {
+            if (!cloudInternIds.has(loc.id) && !isDeletedIntern(loc)) {
+              cleanInts.push(loc);
+              if (supabase) {
+                supabase.from('interns').upsert(loc).then(({ error }) => {
+                  if (error) console.warn('Background sync failed for intern:', loc.intern_id);
+                });
+              }
+            }
+          }
+        } catch {
+          // ignore parsing error
+        }
+      }
+
       setInterns(cleanInts);
       localStorage.setItem('wc_interns', JSON.stringify(cleanInts));
 
@@ -362,32 +384,36 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       created_at: new Date().toISOString(),
     };
 
+    // 1. Update local state & localStorage IMMEDIATELY so creation never blocks or fails UI
+    syncState([...interns, newIntern]);
+
+    // 2. Safely attempt cloud upsert to Supabase
     if (isSupabaseConfigured && supabase) {
-      const { error } = await supabase.from('interns').upsert(newIntern);
-      if (error) {
-        console.warn('Supabase full upsert warning, trying base payload:', error);
-        const basePayload = {
-          id: newIntern.id,
-          name: newIntern.name,
-          email: newIntern.email,
-          intern_id: newIntern.intern_id,
-          college: newIntern.college,
-          phone: newIntern.phone,
-          role: newIntern.role,
-          status: newIntern.status,
-          joined_date: newIntern.joined_date,
-          created_at: newIntern.created_at,
-        };
-        const { error: fallbackError } = await supabase.from('interns').upsert(basePayload);
-        if (fallbackError) {
-          console.error('Supabase fallback upsert failed:', fallbackError);
-          throw new Error(`Failed to save intern to database: ${fallbackError.message}`);
+      try {
+        const { error } = await supabase.from('interns').upsert(newIntern);
+        if (error) {
+          console.warn('Supabase full upsert warning, trying base payload:', error);
+          const basePayload = {
+            id: newIntern.id,
+            name: newIntern.name,
+            email: newIntern.email,
+            intern_id: newIntern.intern_id,
+            college: newIntern.college,
+            phone: newIntern.phone,
+            role: newIntern.role,
+            status: newIntern.status,
+            joined_date: newIntern.joined_date,
+            created_at: newIntern.created_at,
+          };
+          const { error: fallbackError } = await supabase.from('interns').upsert(basePayload);
+          if (fallbackError) {
+            console.warn('Supabase fallback upsert failed, saved locally:', fallbackError);
+          }
         }
+      } catch (cloudErr) {
+        console.warn('Network error during Supabase intern upsert, saved locally:', cloudErr);
       }
     }
-
-    // Update local state and localStorage
-    syncState([...interns, newIntern]);
   };
 
   const updateInternStatus = async (id: string, status: 'active' | 'inactive') => {

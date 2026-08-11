@@ -7,7 +7,7 @@ const cspHeader = `
   style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
   font-src 'self' https://fonts.gstatic.com data:;
   img-src 'self' data: blob: https://images.unsplash.com https://www.google-analytics.com https://www.googletagmanager.com;
-  connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://api.resend.com;
+  connect-src 'self' https://www.google-analytics.com https://region1.google-analytics.com https://api.resend.com https://*.supabase.co wss://*.supabase.co https://gspgjeyorijvzdoegisw.supabase.co wss://gspgjeyorijvzdoegisw.supabase.co;
   frame-ancestors 'none';
 `.replace(/\s{2,}/g, ' ').trim();
 
