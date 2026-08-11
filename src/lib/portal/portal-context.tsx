@@ -274,7 +274,12 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     if (!foundIntern && isSupabaseConfigured && supabase) {
       try {
         const { data } = await supabase.from('interns').select('*').eq('email', cleanEmail).single();
-        if (data) foundIntern = data;
+        if (data) {
+          foundIntern = data;
+          if (!interns.some((i) => i.id === data.id)) {
+            syncState([...interns, data]);
+          }
+        }
       } catch (e) {
         console.error('Supabase intern lookup error:', e);
       }
