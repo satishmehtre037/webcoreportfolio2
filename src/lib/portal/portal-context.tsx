@@ -273,10 +273,36 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       created_at: new Date().toISOString(),
     };
 
-    if (isSupabaseConfigured && supabase) {
-      await supabase.from('interns').insert(newIntern);
-    }
+    // Update local state immediately so UI reflects the change instantly
     syncState([...interns, newIntern]);
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        const { error } = await supabase.from('interns').insert(newIntern);
+        if (error) {
+          console.warn('Supabase full insert error (retrying with base fields):', error);
+          // Fallback if password or must_change_password column is not created in Supabase yet
+          const basePayload = {
+            id: newIntern.id,
+            name: newIntern.name,
+            email: newIntern.email,
+            intern_id: newIntern.intern_id,
+            college: newIntern.college,
+            phone: newIntern.phone,
+            role: newIntern.role,
+            status: newIntern.status,
+            joined_date: newIntern.joined_date,
+            created_at: newIntern.created_at,
+          };
+          const { error: fallbackError } = await supabase.from('interns').insert(basePayload);
+          if (fallbackError) {
+            console.error('Supabase fallback insert failed:', fallbackError);
+          }
+        }
+      } catch (err) {
+        console.error('Supabase insert exception:', err);
+      }
+    }
   };
 
   const updateInternStatus = async (id: string, status: 'active' | 'inactive') => {
