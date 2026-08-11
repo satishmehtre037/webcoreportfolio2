@@ -83,139 +83,57 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
         supabase.from('announcements').select('*').order('created_at', { ascending: false }),
       ]);
 
-      const localIntStr = localStorage.getItem('wc_interns');
-      const localLeadsStr = localStorage.getItem('wc_leads');
-      const localCommsStr = localStorage.getItem('wc_commissions');
-      const localRepsStr = localStorage.getItem('wc_reports');
-      const localAnnsStr = localStorage.getItem('wc_announcements');
+      const isDeletedIntern = (i: Intern) =>
+        i.name === '[DELETED]' ||
+        i.email?.startsWith('deleted_') ||
+        i.intern_id?.startsWith('DELETED_') ||
+        (i.status as string) === 'deleted';
 
-      let localInts: Intern[] = localIntStr ? JSON.parse(localIntStr) : [];
-      const demoEmails = ['aarav@webcorestudios.in', 'priya@webcorestudios.in', 'rohan@webcorestudios.in'];
-      localInts = localInts.filter((i) => !demoEmails.includes(i.email));
+      const isDeletedLead = (l: Lead) =>
+        l.business_name === '[DELETED]' || (l.status as string) === 'deleted';
 
-      let localLeads: Lead[] = localLeadsStr ? JSON.parse(localLeadsStr) : [];
-      localLeads = localLeads.filter((l) => l.intern_id !== 'WC-BD-DEMO');
+      // Clean interns from DB
+      const cleanInts = (intData || []).filter((i) => !isDeletedIntern(i));
+      setInterns(cleanInts);
+      localStorage.setItem('wc_interns', JSON.stringify(cleanInts));
 
-      let localComms: Commission[] = localCommsStr ? JSON.parse(localCommsStr) : [];
-      localComms = localComms.filter((c) => c.intern_id !== 'WC-BD-DEMO');
-
-      const localReps: WeeklyReport[] = localRepsStr ? JSON.parse(localRepsStr) : [];
-      const localAnns: Announcement[] = localAnnsStr ? JSON.parse(localAnnsStr) : [];
-
-      const isUUID = (str: string) =>
-        /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str);
-
-      const dbInts = intData || [];
-      const dbIntsMap = new Map(dbInts.map((i) => [i.id, i]));
-      for (const item of localInts) {
-        if (!dbIntsMap.has(item.id)) {
-          try {
-            if (!isUUID(item.id)) item.id = crypto.randomUUID();
-            await supabase.from('interns').upsert(item);
-          } catch (e) {
-            console.error('Failed to sync local intern to cloud:', e);
-          }
-        }
-      }
-
-      const dbLeads = leadData || [];
-      const dbLeadsMap = new Map(dbLeads.map((l) => [l.id, l]));
-      for (const item of localLeads) {
-        if (!dbLeadsMap.has(item.id)) {
-          try {
-            if (!isUUID(item.id)) item.id = crypto.randomUUID();
-            await supabase.from('leads').upsert(item);
-          } catch (e) {
-            console.error('Failed to sync local lead to cloud:', e);
-          }
-        }
-      }
-
-      const dbComms = commData || [];
-      const dbCommsMap = new Map(dbComms.map((c) => [c.id, c]));
-      for (const item of localComms) {
-        if (!dbCommsMap.has(item.id)) {
-          try {
-            if (!isUUID(item.id)) item.id = crypto.randomUUID();
-            await supabase.from('commissions').upsert(item);
-          } catch (e) {
-            console.error('Failed to sync local commission to cloud:', e);
-          }
-        }
-      }
-
-      const dbReps = repData || [];
-      const dbRepsMap = new Map(dbReps.map((r) => [r.id, r]));
-      for (const item of localReps) {
-        if (!dbRepsMap.has(item.id)) {
-          try {
-            if (!isUUID(item.id)) item.id = crypto.randomUUID();
-            await supabase.from('weekly_reports').upsert(item);
-          } catch (e) {
-            console.error('Failed to sync local report to cloud:', e);
-          }
-        }
-      }
-
-      const dbAnns = annData || [];
-      const dbAnnsMap = new Map(dbAnns.map((a) => [a.id, a]));
-      for (const item of localAnns) {
-        if (!dbAnnsMap.has(item.id)) {
-          try {
-            if (!isUUID(item.id)) item.id = crypto.randomUUID();
-            await supabase.from('announcements').upsert(item);
-          } catch (e) {
-            console.error('Failed to sync local announcement to cloud:', e);
-          }
-        }
-      }
-
-      // Merge interns
-      const internMap = new Map<string, Intern>();
-      localInts.forEach((item) => internMap.set(item.intern_id || item.id, item));
-      dbInts.forEach((item) => internMap.set(item.intern_id || item.id, item));
-      const mergedInts = Array.from(internMap.values());
-      setInterns(mergedInts);
-      localStorage.setItem('wc_interns', JSON.stringify(mergedInts));
-
-      const validInternIds = new Set(mergedInts.map((i) => i.intern_id));
+      const validInternIds = new Set(cleanInts.map((i) => i.intern_id));
       validInternIds.add('WC-ADMIN-001');
 
-      // Merge leads & sanitize orphaned/demo records
-      const leadMap = new Map<string, Lead>();
-      localLeads.forEach((item) => leadMap.set(item.id, item));
-      dbLeads.forEach((item) => leadMap.set(item.id, item));
-      const mergedLeads = Array.from(leadMap.values()).filter(
-        (l) => l.intern_id && l.intern_id !== 'WC-BD-DEMO' && l.intern_id !== 'null' && validInternIds.has(l.intern_id)
+      // Clean leads from DB
+      const cleanLeads = (leadData || []).filter(
+        (l) =>
+          !isDeletedLead(l) &&
+          l.intern_id &&
+          l.intern_id !== 'WC-BD-DEMO' &&
+          l.intern_id !== 'null' &&
+          validInternIds.has(l.intern_id)
       );
-      setLeads(mergedLeads);
-      localStorage.setItem('wc_leads', JSON.stringify(mergedLeads));
+      setLeads(cleanLeads);
+      localStorage.setItem('wc_leads', JSON.stringify(cleanLeads));
 
-      // Merge commissions & sanitize orphaned/demo records
-      const commMap = new Map<string, Commission>();
-      localComms.forEach((item) => commMap.set(item.id, item));
-      dbComms.forEach((item) => commMap.set(item.id, item));
-      const mergedComms = Array.from(commMap.values()).filter(
-        (c) => c.intern_id && c.intern_id !== 'WC-BD-DEMO' && c.intern_id !== 'null' && validInternIds.has(c.intern_id)
+      // Clean commissions from DB
+      const cleanComms = (commData || []).filter(
+        (c) =>
+          c.intern_id &&
+          c.intern_id !== 'WC-BD-DEMO' &&
+          c.intern_id !== 'null' &&
+          validInternIds.has(c.intern_id)
       );
-      setCommissions(mergedComms);
-      localStorage.setItem('wc_commissions', JSON.stringify(mergedComms));
+      setCommissions(cleanComms);
+      localStorage.setItem('wc_commissions', JSON.stringify(cleanComms));
 
-      // Merge reports
-      const repMap = new Map<string, WeeklyReport>();
-      localReps.forEach((item) => repMap.set(item.id, item));
-      dbReps.forEach((item) => repMap.set(item.id, item));
-      const mergedReps = Array.from(repMap.values()).filter((r) => r.intern_id && validInternIds.has(r.intern_id));
-      setWeeklyReports(mergedReps);
-      localStorage.setItem('wc_reports', JSON.stringify(mergedReps));
+      // Clean reports from DB
+      const cleanReps = (repData || []).filter(
+        (r) => r.intern_id && validInternIds.has(r.intern_id)
+      );
+      setWeeklyReports(cleanReps);
+      localStorage.setItem('wc_reports', JSON.stringify(cleanReps));
 
-      // Merge announcements
-      const annMap = new Map<string, Announcement>();
-      localAnns.forEach((item) => annMap.set(item.id, item));
-      dbAnns.forEach((item) => annMap.set(item.id, item));
-      const mergedAnns = Array.from(annMap.values());
-      setAnnouncements(mergedAnns);
-      localStorage.setItem('wc_announcements', JSON.stringify(mergedAnns));
+      // Clean announcements from DB
+      const cleanAnns = (annData || []).filter((a) => a.title !== '[DELETED]');
+      setAnnouncements(cleanAnns);
+      localStorage.setItem('wc_announcements', JSON.stringify(cleanAnns));
     } catch (err) {
       console.warn('Supabase fetch failed, using local fallback:', err);
     }
@@ -478,42 +396,61 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
   const deleteIntern = async (id: string) => {
     const targetIntern = interns.find((i) => i.id === id || i.intern_id === id);
     const targetInternId = targetIntern?.intern_id || id;
+    const targetId = targetIntern?.id || id;
 
-    const updatedInts = interns.filter((i) => i.id !== id && i.intern_id !== id);
+    const updatedInts = interns.filter((i) => i.id !== targetId && i.intern_id !== targetInternId);
     const updatedLeads = leads.filter((l) => l.intern_id !== targetInternId);
     const updatedComms = commissions.filter((c) => c.intern_id !== targetInternId);
     const updatedReps = weeklyReports.filter((r) => r.intern_id !== targetInternId);
 
+    syncState(updatedInts, updatedLeads, updatedComms, updatedReps);
+
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from('interns').delete().or(`id.eq.${id},intern_id.eq.${targetInternId}`);
-        await supabase.from('leads').delete().eq('intern_id', targetInternId);
-        await supabase.from('commissions').delete().eq('intern_id', targetInternId);
+        // 1. Soft-delete update to guarantee cloud state update across all devices
+        await supabase
+          .from('interns')
+          .update({
+            name: '[DELETED]',
+            email: `deleted_${Date.now()}_${targetIntern?.email || 'intern'}`,
+            status: 'inactive',
+          })
+          .or(`id.eq.${targetId},intern_id.eq.${targetInternId}`);
+
+        // 2. Cascade delete queries
         await supabase.from('weekly_reports').delete().eq('intern_id', targetInternId);
+        await supabase.from('commissions').delete().eq('intern_id', targetInternId);
+        await supabase.from('leads').delete().eq('intern_id', targetInternId);
+        await supabase.from('interns').delete().or(`id.eq.${targetId},intern_id.eq.${targetInternId}`);
       } catch (err) {
         console.error('Failed to delete intern from Supabase:', err);
       }
     }
-    syncState(updatedInts, updatedLeads, updatedComms, updatedReps);
   };
 
   const deleteLead = async (leadId: string) => {
     const updatedLeads = leads.filter((l) => l.id !== leadId);
     const updatedComms = commissions.filter((c) => c.lead_id !== leadId);
 
+    syncState(undefined, updatedLeads, updatedComms);
+
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from('leads').delete().eq('id', leadId);
+        await supabase
+          .from('leads')
+          .update({ business_name: '[DELETED]', status: 'closed_lost' })
+          .eq('id', leadId);
         await supabase.from('commissions').delete().eq('lead_id', leadId);
+        await supabase.from('leads').delete().eq('id', leadId);
       } catch (err) {
         console.error('Failed to delete lead from Supabase:', err);
       }
     }
-    syncState(undefined, updatedLeads, updatedComms);
   };
 
   const deleteCommission = async (commissionId: string) => {
     const updatedComms = commissions.filter((c) => c.id !== commissionId);
+    syncState(undefined, undefined, updatedComms);
 
     if (isSupabaseConfigured && supabase) {
       try {
@@ -522,7 +459,6 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
         console.error('Failed to delete commission from Supabase:', err);
       }
     }
-    syncState(undefined, undefined, updatedComms);
   };
 
   const addLead = async (
