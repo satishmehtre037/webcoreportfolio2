@@ -37,6 +37,11 @@ export const Contact: React.FC = () => {
       return;
     }
 
+    if (form.phone.trim() && form.phone.trim().length !== 10) {
+      setErrorMsg("Phone number must be exactly 10 digits.");
+      return;
+    }
+
     setLoading(true);
 
     try {
@@ -187,16 +192,23 @@ export const Contact: React.FC = () => {
                   <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
                     <div>
                       <label className="mb-2 block font-mono-plex text-xs uppercase tracking-widest text-charcoal font-bold">
-                        Phone / WhatsApp (+91)
+                        Phone / WhatsApp (10 Digits)
                       </label>
-                      <input
-                        type="tel"
-                        className={inputClass}
-                        value={form.phone}
-                        onChange={set("phone")}
-                        placeholder="Enter your phone or WhatsApp number"
-                        data-testid="contact-phone"
-                      />
+                      <div className="flex items-center rounded-xl border-[2px] border-b-[4px] border-ink bg-ivory focus-within:border-wine">
+                        <span className="pl-4 font-mono-plex text-sm font-bold text-wine select-none">+91</span>
+                        <input
+                          type="tel"
+                          maxLength={10}
+                          className="w-full bg-transparent px-3 py-3 font-body text-charcoal placeholder:text-charcoal/40 focus:outline-none"
+                          value={form.phone}
+                          onChange={(e) => {
+                            const digits = e.target.value.replace(/\D/g, "").slice(0, 10);
+                            setForm((f) => ({ ...f, phone: digits }));
+                          }}
+                          placeholder="9876543210"
+                          data-testid="contact-phone"
+                        />
+                      </div>
                     </div>
                     <div>
                       <label className="mb-2 block font-mono-plex text-xs uppercase tracking-widest text-charcoal font-bold">
