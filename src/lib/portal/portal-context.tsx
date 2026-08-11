@@ -102,19 +102,14 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
           const localAnnsStr = localStorage.getItem('wc_announcements');
 
           let localInts: Intern[] = localIntStr ? JSON.parse(localIntStr) : [];
-          localInts = localInts.filter(
-            (i) => i.intern_id !== 'WC-BD-001' && i.intern_id !== 'WC-BD-002' && i.intern_id !== 'WC-BD-003'
-          );
+          const demoEmails = ['aarav@webcorestudios.in', 'priya@webcorestudios.in', 'rohan@webcorestudios.in'];
+          localInts = localInts.filter((i) => !demoEmails.includes(i.email));
 
           let localLeads: Lead[] = localLeadsStr ? JSON.parse(localLeadsStr) : [];
-          localLeads = localLeads.filter(
-            (l) => l.intern_id !== 'WC-BD-001' && l.intern_id !== 'WC-BD-002' && l.intern_id !== 'WC-BD-003'
-          );
+          localLeads = localLeads.filter((l) => l.intern_id !== 'WC-BD-DEMO');
 
           let localComms: Commission[] = localCommsStr ? JSON.parse(localCommsStr) : [];
-          localComms = localComms.filter(
-            (c) => c.intern_id !== 'WC-BD-001' && c.intern_id !== 'WC-BD-002' && c.intern_id !== 'WC-BD-003'
-          );
+          localComms = localComms.filter((c) => c.intern_id !== 'WC-BD-DEMO');
 
           const localReps: WeeklyReport[] = localRepsStr ? JSON.parse(localRepsStr) : [];
           const localAnns: Announcement[] = localAnnsStr ? JSON.parse(localAnnsStr) : [];
@@ -182,20 +177,14 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       const localAnns = localStorage.getItem('wc_announcements');
 
       let parsedInt: Intern[] = localInt ? JSON.parse(localInt) : [];
-      // Purge legacy demo intern IDs from browser cache
-      parsedInt = parsedInt.filter(
-        (i) => i.intern_id !== 'WC-BD-001' && i.intern_id !== 'WC-BD-002' && i.intern_id !== 'WC-BD-003'
-      );
+      const demoEmails = ['aarav@webcorestudios.in', 'priya@webcorestudios.in', 'rohan@webcorestudios.in'];
+      parsedInt = parsedInt.filter((i) => !demoEmails.includes(i.email));
 
       let parsedLeads: Lead[] = localLeads ? JSON.parse(localLeads) : [];
-      parsedLeads = parsedLeads.filter(
-        (l) => l.intern_id !== 'WC-BD-001' && l.intern_id !== 'WC-BD-002' && l.intern_id !== 'WC-BD-003'
-      );
+      parsedLeads = parsedLeads.filter((l) => l.intern_id !== 'WC-BD-DEMO');
 
       let parsedComms: Commission[] = localComms ? JSON.parse(localComms) : [];
-      parsedComms = parsedComms.filter(
-        (c) => c.intern_id !== 'WC-BD-001' && c.intern_id !== 'WC-BD-002' && c.intern_id !== 'WC-BD-003'
-      );
+      parsedComms = parsedComms.filter((c) => c.intern_id !== 'WC-BD-DEMO');
 
       setInterns(parsedInt);
       setLeads(parsedLeads);
@@ -319,8 +308,15 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     phone?: string;
     password?: string;
   }) => {
-    const count = interns.length + 1;
-    const internIdStr = `WC-BD-${String(count).padStart(3, '0')}`;
+    const maxNum = interns.reduce((max, i) => {
+      const match = i.intern_id?.match(/WC-BD-(\d+)/);
+      if (match) {
+        const num = parseInt(match[1], 10);
+        return num > max ? num : max;
+      }
+      return max;
+    }, 0);
+    const internIdStr = `WC-BD-${String(maxNum + 1).padStart(3, '0')}`;
 
     const newIntern: Intern = {
       id: crypto.randomUUID(),
