@@ -63,137 +63,167 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
   const [weeklyReports, setWeeklyReports] = useState<WeeklyReport[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
 
-  // Load initial data from Supabase or localStorage fallback
-  useEffect(() => {
-    async function loadInitialData() {
-      setIsLoading(true);
-      
-      // Load stored auth session
-      const storedUserStr = localStorage.getItem('webcore_portal_user');
-      if (storedUserStr) {
-        try {
-          setCurrentUser(JSON.parse(storedUserStr));
-        } catch {
-          localStorage.removeItem('webcore_portal_user');
+  const fetchDataFromSupabase = async () => {
+    if (!isSupabaseConfigured || !supabase) return;
+    try {
+      const [
+        { data: intData },
+        { data: leadData },
+        { data: commData },
+        { data: repData },
+        { data: annData },
+      ] = await Promise.all([
+        supabase.from('interns').select('*'),
+        supabase.from('leads').select('*'),
+        supabase.from('commissions').select('*'),
+        supabase.from('weekly_reports').select('*'),
+        supabase.from('announcements').select('*').order('created_at', { ascending: false }),
+      ]);
+
+      const localIntStr = localStorage.getItem('wc_interns');
+      const localLeadsStr = localStorage.getItem('wc_leads');
+      const localCommsStr = localStorage.getItem('wc_commissions');
+      const localRepsStr = localStorage.getItem('wc_reports');
+      const localAnnsStr = localStorage.getItem('wc_announcements');
+
+      let localInts: Intern[] = localIntStr ? JSON.parse(localIntStr) : [];
+      const demoEmails = ['aarav@webcorestudios.in', 'priya@webcorestudios.in', 'rohan@webcorestudios.in'];
+      localInts = localInts.filter((i) => !demoEmails.includes(i.email));
+
+      let localLeads: Lead[] = localLeadsStr ? JSON.parse(localLeadsStr) : [];
+      localLeads = localLeads.filter((l) => l.intern_id !== 'WC-BD-DEMO');
+
+      let localComms: Commission[] = localCommsStr ? JSON.parse(localCommsStr) : [];
+      localComms = localComms.filter((c) => c.intern_id !== 'WC-BD-DEMO');
+
+      const localReps: WeeklyReport[] = localRepsStr ? JSON.parse(localRepsStr) : [];
+      const localAnns: Announcement[] = localAnnsStr ? JSON.parse(localAnnsStr) : [];
+
+      const dbInts = intData || [];
+      // Auto-migrate local interns to Supabase DB if missing in cloud
+      const dbIntsMap = new Map(dbInts.map((i) => [i.id, i]));
+      for (const item of localInts) {
+        if (!dbIntsMap.has(item.id)) {
+          try {
+            await supabase.from('interns').upsert(item);
+          } catch (e) {
+            console.error('Failed to sync local intern to cloud:', e);
+          }
         }
       }
 
+      // Merge interns
+      const internMap = new Map<string, Intern>();
+      localInts.forEach((item) => internMap.set(item.intern_id || item.id, item));
+      dbInts.forEach((item) => internMap.set(item.intern_id || item.id, item));
+      const mergedInts = Array.from(internMap.values());
+      setInterns(mergedInts);
+      localStorage.setItem('wc_interns', JSON.stringify(mergedInts));
+
+      // Merge leads
+      const dbLeads = leadData || [];
+      const leadMap = new Map<string, Lead>();
+      localLeads.forEach((item) => leadMap.set(item.id, item));
+      dbLeads.forEach((item) => leadMap.set(item.id, item));
+      const mergedLeads = Array.from(leadMap.values());
+      setLeads(mergedLeads);
+      localStorage.setItem('wc_leads', JSON.stringify(mergedLeads));
+
+      // Merge commissions
+      const dbComms = commData || [];
+      const commMap = new Map<string, Commission>();
+      localComms.forEach((item) => commMap.set(item.id, item));
+      dbComms.forEach((item) => commMap.set(item.id, item));
+      const mergedComms = Array.from(commMap.values());
+      setCommissions(mergedComms);
+      localStorage.setItem('wc_commissions', JSON.stringify(mergedComms));
+
+      // Merge reports
+      const dbReps = repData || [];
+      const repMap = new Map<string, WeeklyReport>();
+      localReps.forEach((item) => repMap.set(item.id, item));
+      dbReps.forEach((item) => repMap.set(item.id, item));
+      const mergedReps = Array.from(repMap.values());
+      setWeeklyReports(mergedReps);
+      localStorage.setItem('wc_reports', JSON.stringify(mergedReps));
+
+      // Merge announcements
+      const dbAnns = annData || [];
+      const annMap = new Map<string, Announcement>();
+      localAnns.forEach((item) => annMap.set(item.id, item));
+      dbAnns.forEach((item) => annMap.set(item.id, item));
+      const mergedAnns = Array.from(annMap.values());
+      setAnnouncements(mergedAnns);
+      localStorage.setItem('wc_announcements', JSON.stringify(mergedAnns));
+    } catch (err) {
+      console.warn('Supabase fetch failed, using local fallback:', err);
+    }
+  };
+
+  function loadLocalFallback() {
+    const localInt = localStorage.getItem('wc_interns');
+    const localLeads = localStorage.getItem('wc_leads');
+    const localComms = localStorage.getItem('wc_commissions');
+    const localReps = localStorage.getItem('wc_reports');
+    const localAnns = localStorage.getItem('wc_announcements');
+
+    let parsedInt: Intern[] = localInt ? JSON.parse(localInt) : [];
+    const demoEmails = ['aarav@webcorestudios.in', 'priya@webcorestudios.in', 'rohan@webcorestudios.in'];
+    parsedInt = parsedInt.filter((i) => !demoEmails.includes(i.email));
+
+    let parsedLeads: Lead[] = localLeads ? JSON.parse(localLeads) : [];
+    parsedLeads = parsedLeads.filter((l) => l.intern_id !== 'WC-BD-DEMO');
+
+    let parsedComms: Commission[] = localComms ? JSON.parse(localComms) : [];
+    parsedComms = parsedComms.filter((c) => c.intern_id !== 'WC-BD-DEMO');
+
+    setInterns(parsedInt);
+    setLeads(parsedLeads);
+    setCommissions(parsedComms);
+    setWeeklyReports(localReps ? JSON.parse(localReps) : []);
+    setAnnouncements(localAnns ? JSON.parse(localAnns) : []);
+  }
+
+  // Load initial data from Supabase or localStorage fallback + setup live polling
+  useEffect(() => {
+    // Load stored auth session
+    const storedUserStr = localStorage.getItem('webcore_portal_user');
+    if (storedUserStr) {
+      try {
+        setCurrentUser(JSON.parse(storedUserStr));
+      } catch {
+        localStorage.removeItem('webcore_portal_user');
+      }
+    }
+
+    const init = async () => {
+      setIsLoading(true);
       if (isSupabaseConfigured && supabase) {
-        try {
-          const [
-            { data: intData },
-            { data: leadData },
-            { data: commData },
-            { data: repData },
-            { data: annData },
-          ] = await Promise.all([
-            supabase.from('interns').select('*'),
-            supabase.from('leads').select('*'),
-            supabase.from('commissions').select('*'),
-            supabase.from('weekly_reports').select('*'),
-            supabase.from('announcements').select('*').order('created_at', { ascending: false }),
-          ]);
-
-          // Read local storage fallbacks to merge with Supabase data
-          const localIntStr = localStorage.getItem('wc_interns');
-          const localLeadsStr = localStorage.getItem('wc_leads');
-          const localCommsStr = localStorage.getItem('wc_commissions');
-          const localRepsStr = localStorage.getItem('wc_reports');
-          const localAnnsStr = localStorage.getItem('wc_announcements');
-
-          let localInts: Intern[] = localIntStr ? JSON.parse(localIntStr) : [];
-          const demoEmails = ['aarav@webcorestudios.in', 'priya@webcorestudios.in', 'rohan@webcorestudios.in'];
-          localInts = localInts.filter((i) => !demoEmails.includes(i.email));
-
-          let localLeads: Lead[] = localLeadsStr ? JSON.parse(localLeadsStr) : [];
-          localLeads = localLeads.filter((l) => l.intern_id !== 'WC-BD-DEMO');
-
-          let localComms: Commission[] = localCommsStr ? JSON.parse(localCommsStr) : [];
-          localComms = localComms.filter((c) => c.intern_id !== 'WC-BD-DEMO');
-
-          const localReps: WeeklyReport[] = localRepsStr ? JSON.parse(localRepsStr) : [];
-          const localAnns: Announcement[] = localAnnsStr ? JSON.parse(localAnnsStr) : [];
-
-          // Merge interns
-          const dbInts = intData || [];
-          const internMap = new Map<string, Intern>();
-          localInts.forEach((item) => internMap.set(item.intern_id || item.id, item));
-          dbInts.forEach((item) => internMap.set(item.intern_id || item.id, item));
-          const mergedInts = Array.from(internMap.values());
-          setInterns(mergedInts);
-          localStorage.setItem('wc_interns', JSON.stringify(mergedInts));
-
-          // Merge leads
-          const dbLeads = leadData || [];
-          const leadMap = new Map<string, Lead>();
-          localLeads.forEach((item) => leadMap.set(item.id, item));
-          dbLeads.forEach((item) => leadMap.set(item.id, item));
-          const mergedLeads = Array.from(leadMap.values());
-          setLeads(mergedLeads);
-          localStorage.setItem('wc_leads', JSON.stringify(mergedLeads));
-
-          // Merge commissions
-          const dbComms = commData || [];
-          const commMap = new Map<string, Commission>();
-          localComms.forEach((item) => commMap.set(item.id, item));
-          dbComms.forEach((item) => commMap.set(item.id, item));
-          const mergedComms = Array.from(commMap.values());
-          setCommissions(mergedComms);
-          localStorage.setItem('wc_commissions', JSON.stringify(mergedComms));
-
-          // Merge reports
-          const dbReps = repData || [];
-          const repMap = new Map<string, WeeklyReport>();
-          localReps.forEach((item) => repMap.set(item.id, item));
-          dbReps.forEach((item) => repMap.set(item.id, item));
-          const mergedReps = Array.from(repMap.values());
-          setWeeklyReports(mergedReps);
-          localStorage.setItem('wc_reports', JSON.stringify(mergedReps));
-
-          // Merge announcements
-          const dbAnns = annData || [];
-          const annMap = new Map<string, Announcement>();
-          localAnns.forEach((item) => annMap.set(item.id, item));
-          dbAnns.forEach((item) => annMap.set(item.id, item));
-          const mergedAnns = Array.from(annMap.values());
-          setAnnouncements(mergedAnns);
-          localStorage.setItem('wc_announcements', JSON.stringify(mergedAnns));
-        } catch (err) {
-          console.warn('Supabase fetch failed, using local fallback:', err);
-          loadLocalFallback();
-        }
+        await fetchDataFromSupabase();
       } else {
         loadLocalFallback();
       }
-
       setIsLoading(false);
+    };
+
+    init();
+
+    if (isSupabaseConfigured && supabase) {
+      const handleSync = () => {
+        fetchDataFromSupabase();
+      };
+
+      window.addEventListener('focus', handleSync);
+      document.addEventListener('visibilitychange', handleSync);
+
+      const intervalId = setInterval(handleSync, 15000);
+
+      return () => {
+        window.removeEventListener('focus', handleSync);
+        document.removeEventListener('visibilitychange', handleSync);
+        clearInterval(intervalId);
+      };
     }
-
-    function loadLocalFallback() {
-      const localInt = localStorage.getItem('wc_interns');
-      const localLeads = localStorage.getItem('wc_leads');
-      const localComms = localStorage.getItem('wc_commissions');
-      const localReps = localStorage.getItem('wc_reports');
-      const localAnns = localStorage.getItem('wc_announcements');
-
-      let parsedInt: Intern[] = localInt ? JSON.parse(localInt) : [];
-      const demoEmails = ['aarav@webcorestudios.in', 'priya@webcorestudios.in', 'rohan@webcorestudios.in'];
-      parsedInt = parsedInt.filter((i) => !demoEmails.includes(i.email));
-
-      let parsedLeads: Lead[] = localLeads ? JSON.parse(localLeads) : [];
-      parsedLeads = parsedLeads.filter((l) => l.intern_id !== 'WC-BD-DEMO');
-
-      let parsedComms: Commission[] = localComms ? JSON.parse(localComms) : [];
-      parsedComms = parsedComms.filter((c) => c.intern_id !== 'WC-BD-DEMO');
-
-      setInterns(parsedInt);
-      setLeads(parsedLeads);
-      setCommissions(parsedComms);
-      setWeeklyReports(localReps ? JSON.parse(localReps) : []);
-      setAnnouncements(localAnns ? JSON.parse(localAnns) : []);
-    }
-
-    loadInitialData();
   }, []);
 
   // Save to localStorage state helper
@@ -389,8 +419,8 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     };
 
     if (isSupabaseConfigured && supabase) {
-      await supabase.from('leads').insert({
-        id: crypto.randomUUID(),
+      await supabase.from('leads').upsert({
+        id: newLead.id,
         intern_id: currentUser.intern_id,
         business_name: leadData.business_name,
         owner_name: leadData.owner_name,
@@ -403,6 +433,8 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
         outreach_method: leadData.outreach_method,
         notes: leadData.notes,
         status: 'submitted',
+        submitted_at: newLead.submitted_at,
+        updated_at: newLead.updated_at,
       });
     }
 
