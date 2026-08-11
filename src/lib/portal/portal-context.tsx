@@ -29,6 +29,8 @@ interface PortalContextType {
   addIntern: (data: { name: string; email: string; college?: string; phone?: string; password?: string }) => Promise<void>;
   updateInternStatus: (id: string, status: 'active' | 'inactive') => Promise<void>;
   deleteIntern: (id: string) => Promise<void>;
+  deleteLead: (leadId: string) => Promise<void>;
+  deleteCommission: (commissionId: string) => Promise<void>;
   updatePassword: (newPassword: string) => Promise<{ success: boolean; error?: string }>;
   addLead: (leadData: Omit<Lead, 'id' | 'intern_id' | 'status' | 'submitted_at' | 'updated_at'>) => Promise<string>;
   updateLeadStatus: (leadId: string, status: LeadStatus, projectAmount?: number) => Promise<void>;
@@ -176,19 +178,26 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       setInterns(mergedInts);
       localStorage.setItem('wc_interns', JSON.stringify(mergedInts));
 
-      // Merge leads
+      const validInternIds = new Set(mergedInts.map((i) => i.intern_id));
+      validInternIds.add('WC-ADMIN-001');
+
+      // Merge leads & sanitize orphaned/demo records
       const leadMap = new Map<string, Lead>();
       localLeads.forEach((item) => leadMap.set(item.id, item));
       dbLeads.forEach((item) => leadMap.set(item.id, item));
-      const mergedLeads = Array.from(leadMap.values());
+      const mergedLeads = Array.from(leadMap.values()).filter(
+        (l) => l.intern_id && l.intern_id !== 'WC-BD-DEMO' && l.intern_id !== 'null' && validInternIds.has(l.intern_id)
+      );
       setLeads(mergedLeads);
       localStorage.setItem('wc_leads', JSON.stringify(mergedLeads));
 
-      // Merge commissions
+      // Merge commissions & sanitize orphaned/demo records
       const commMap = new Map<string, Commission>();
       localComms.forEach((item) => commMap.set(item.id, item));
       dbComms.forEach((item) => commMap.set(item.id, item));
-      const mergedComms = Array.from(commMap.values());
+      const mergedComms = Array.from(commMap.values()).filter(
+        (c) => c.intern_id && c.intern_id !== 'WC-BD-DEMO' && c.intern_id !== 'null' && validInternIds.has(c.intern_id)
+      );
       setCommissions(mergedComms);
       localStorage.setItem('wc_commissions', JSON.stringify(mergedComms));
 
@@ -196,7 +205,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       const repMap = new Map<string, WeeklyReport>();
       localReps.forEach((item) => repMap.set(item.id, item));
       dbReps.forEach((item) => repMap.set(item.id, item));
-      const mergedReps = Array.from(repMap.values());
+      const mergedReps = Array.from(repMap.values()).filter((r) => r.intern_id && validInternIds.has(r.intern_id));
       setWeeklyReports(mergedReps);
       localStorage.setItem('wc_reports', JSON.stringify(mergedReps));
 
@@ -395,8 +404,14 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     phone?: string;
     password?: string;
   }) => {
-    const maxNum = interns.reduce((max, i) => {
-      const match = i.intern_id?.match(/WC-BD-(\d+)/);
+    const allInternIdStrings = [
+      ...interns.map((i) => i.intern_id),
+      ...leads.map((l) => l.intern_id),
+      ...commissions.map((c) => c.intern_id),
+      ...weeklyReports.map((r) => r.intern_id),
+    ];
+    const maxNum = allInternIdStrings.reduce((max, idStr) => {
+      const match = idStr?.match(/WC-BD-(\d+)/);
       if (match) {
         const num = parseInt(match[1], 10);
         return num > max ? num : max;
@@ -461,15 +476,53 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
   };
 
   const deleteIntern = async (id: string) => {
-    const updated = interns.filter((i) => i.id !== id && i.intern_id !== id);
+    const targetIntern = interns.find((i) => i.id === id || i.intern_id === id);
+    const targetInternId = targetIntern?.intern_id || id;
+
+    const updatedInts = interns.filter((i) => i.id !== id && i.intern_id !== id);
+    const updatedLeads = leads.filter((l) => l.intern_id !== targetInternId);
+    const updatedComms = commissions.filter((c) => c.intern_id !== targetInternId);
+    const updatedReps = weeklyReports.filter((r) => r.intern_id !== targetInternId);
+
     if (isSupabaseConfigured && supabase) {
       try {
-        await supabase.from('interns').delete().or(`id.eq.${id},intern_id.eq.${id}`);
+        await supabase.from('interns').delete().or(`id.eq.${id},intern_id.eq.${targetInternId}`);
+        await supabase.from('leads').delete().eq('intern_id', targetInternId);
+        await supabase.from('commissions').delete().eq('intern_id', targetInternId);
+        await supabase.from('weekly_reports').delete().eq('intern_id', targetInternId);
       } catch (err) {
         console.error('Failed to delete intern from Supabase:', err);
       }
     }
-    syncState(updated);
+    syncState(updatedInts, updatedLeads, updatedComms, updatedReps);
+  };
+
+  const deleteLead = async (leadId: string) => {
+    const updatedLeads = leads.filter((l) => l.id !== leadId);
+    const updatedComms = commissions.filter((c) => c.lead_id !== leadId);
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.from('leads').delete().eq('id', leadId);
+        await supabase.from('commissions').delete().eq('lead_id', leadId);
+      } catch (err) {
+        console.error('Failed to delete lead from Supabase:', err);
+      }
+    }
+    syncState(undefined, updatedLeads, updatedComms);
+  };
+
+  const deleteCommission = async (commissionId: string) => {
+    const updatedComms = commissions.filter((c) => c.id !== commissionId);
+
+    if (isSupabaseConfigured && supabase) {
+      try {
+        await supabase.from('commissions').delete().eq('id', commissionId);
+      } catch (err) {
+        console.error('Failed to delete commission from Supabase:', err);
+      }
+    }
+    syncState(undefined, undefined, updatedComms);
   };
 
   const addLead = async (
@@ -666,6 +719,8 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
         addIntern,
         updateInternStatus,
         deleteIntern,
+        deleteLead,
+        deleteCommission,
         updatePassword,
         addLead,
         updateLeadStatus,

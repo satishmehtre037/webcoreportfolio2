@@ -16,6 +16,7 @@ import {
   MapPin,
   Calendar,
   Sparkles,
+  Trash2,
 } from 'lucide-react';
 
 const STATUS_OPTIONS: LeadStatus[] = [
@@ -29,7 +30,7 @@ const STATUS_OPTIONS: LeadStatus[] = [
 ];
 
 export default function AdminAllLeadsPage() {
-  const { leads, interns, updateLeadStatus, getInternCommissionRate } = usePortal();
+  const { leads, interns, updateLeadStatus, deleteLead, getInternCommissionRate } = usePortal();
 
   const [selectedStatus, setSelectedStatus] = useState<string>('all');
   const [selectedIntern, setSelectedIntern] = useState<string>('all');
@@ -187,7 +188,8 @@ export default function AdminAllLeadsPage() {
                   <th className="px-4 py-3.5">City</th>
                   <th className="px-4 py-3.5">Outreach</th>
                   <th className="px-4 py-3.5">Status Update</th>
-                  <th className="px-4 py-3.5 text-right">Submitted</th>
+                  <th className="px-4 py-3.5">Submitted</th>
+                  <th className="px-4 py-3.5 text-right">Action</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -229,11 +231,24 @@ export default function AdminAllLeadsPage() {
                           ))}
                         </select>
                       </td>
-                      <td className="px-4 py-4 text-right font-mono text-xs text-slate-400">
+                      <td className="px-4 py-4 font-mono text-xs text-slate-400">
                         {new Date(lead.submitted_at).toLocaleDateString('en-IN', {
                           month: 'short',
                           day: 'numeric',
                         })}
+                      </td>
+                      <td className="px-4 py-4 text-right">
+                        <button
+                          onClick={() => {
+                            if (confirm(`Are you sure you want to delete lead for "${lead.business_name}"?`)) {
+                              deleteLead(lead.id);
+                            }
+                          }}
+                          title="Delete Lead"
+                          className="inline-flex items-center gap-1 rounded-lg border border-red-500/30 bg-red-500/10 px-2 py-1 text-xs font-medium text-red-400 hover:bg-red-500/20"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" /> Delete
+                        </button>
                       </td>
                     </tr>
                   );

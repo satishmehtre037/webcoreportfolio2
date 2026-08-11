@@ -3,10 +3,10 @@
 import React from 'react';
 import { usePortal } from '@/lib/portal/portal-context';
 import { CommissionStatus } from '@/lib/portal/types';
-import { Wallet, CheckCircle2, Clock, Check, IndianRupee, Sparkles } from 'lucide-react';
+import { Wallet, CheckCircle2, Clock, Check, IndianRupee, Sparkles, Trash2 } from 'lucide-react';
 
 export default function AdminCommissionsPage() {
-  const { commissions, interns, leads, updateCommissionStatus } = usePortal();
+  const { commissions, interns, leads, updateCommissionStatus, deleteCommission } = usePortal();
 
   const totalCommissionsCount = commissions.length;
   const totalPaid = commissions
@@ -144,7 +144,7 @@ export default function AdminCommissionsPage() {
                         </span>
                       </td>
                       <td className="px-4 py-4 text-right">
-                        <div className="flex justify-end gap-2">
+                        <div className="flex justify-end items-center gap-2">
                           {comm.status === 'pending' && (
                             <button
                               onClick={() => updateCommissionStatus(comm.id, 'approved')}
@@ -166,6 +166,18 @@ export default function AdminCommissionsPage() {
                               <Check className="h-3.5 w-3.5 text-emerald-400" /> Disbursed
                             </span>
                           )}
+
+                          <button
+                            onClick={() => {
+                              if (confirm('Are you sure you want to delete this commission record?')) {
+                                deleteCommission(comm.id);
+                              }
+                            }}
+                            title="Delete Commission"
+                            className="inline-flex items-center gap-1 rounded-lg border border-red-500/30 bg-red-500/10 px-2 py-1 text-xs font-medium text-red-400 hover:bg-red-500/20"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" /> Delete
+                          </button>
                         </div>
                       </td>
                     </tr>
