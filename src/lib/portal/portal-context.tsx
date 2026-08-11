@@ -642,6 +642,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
 
   // Compute Leaderboard
   const leaderboard: LeaderboardEntry[] = interns
+    .filter((intern) => intern.role === 'intern')
     .map((intern) => {
       const internLeads = leads.filter((l) => l.intern_id === intern.intern_id);
       const closedWon = internLeads.filter((l) => l.status === 'closed_won').length;
