@@ -55,8 +55,9 @@ export default function ManageInternsPage() {
       setPhone('');
       setPassword('');
       setIsAddModalOpen(false);
-    } catch (err) {
-      console.error(err);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to register intern.';
+      alert(message);
     } finally {
       setSubmitting(false);
     }

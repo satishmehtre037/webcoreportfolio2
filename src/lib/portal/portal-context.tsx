@@ -136,6 +136,7 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       localStorage.setItem('wc_announcements', JSON.stringify(cleanAnns));
     } catch (err) {
       console.warn('Supabase fetch failed, using local fallback:', err);
+      loadLocalFallback();
     }
   };
 
@@ -322,6 +323,14 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
     phone?: string;
     password?: string;
   }) => {
+    const cleanEmail = data.email.trim().toLowerCase();
+
+    // Prevent duplicate active email creation
+    const existing = interns.find((i) => i.email.toLowerCase() === cleanEmail);
+    if (existing) {
+      throw new Error(`An intern account with email "${cleanEmail}" already exists.`);
+    }
+
     const allInternIdStrings = [
       ...interns.map((i) => i.intern_id),
       ...leads.map((l) => l.intern_id),
@@ -340,11 +349,11 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
 
     const newIntern: Intern = {
       id: crypto.randomUUID(),
-      name: data.name,
-      email: data.email.toLowerCase(),
+      name: data.name.trim(),
+      email: cleanEmail,
       intern_id: internIdStr,
-      college: data.college || '',
-      phone: data.phone || '',
+      college: data.college ? data.college.trim() : '',
+      phone: data.phone ? data.phone.trim() : '',
       password: data.password ? data.password.trim() : 'webcore123',
       must_change_password: true,
       role: 'intern',
@@ -353,36 +362,32 @@ export function PortalProvider({ children }: { children: React.ReactNode }) {
       created_at: new Date().toISOString(),
     };
 
-    // Update local state immediately so UI reflects the change instantly
-    syncState([...interns, newIntern]);
-
     if (isSupabaseConfigured && supabase) {
-      try {
-        const { error } = await supabase.from('interns').insert(newIntern);
-        if (error) {
-          console.warn('Supabase full insert error (retrying with base fields):', error);
-          // Fallback if password or must_change_password column is not created in Supabase yet
-          const basePayload = {
-            id: newIntern.id,
-            name: newIntern.name,
-            email: newIntern.email,
-            intern_id: newIntern.intern_id,
-            college: newIntern.college,
-            phone: newIntern.phone,
-            role: newIntern.role,
-            status: newIntern.status,
-            joined_date: newIntern.joined_date,
-            created_at: newIntern.created_at,
-          };
-          const { error: fallbackError } = await supabase.from('interns').insert(basePayload);
-          if (fallbackError) {
-            console.error('Supabase fallback insert failed:', fallbackError);
-          }
+      const { error } = await supabase.from('interns').upsert(newIntern);
+      if (error) {
+        console.warn('Supabase full upsert warning, trying base payload:', error);
+        const basePayload = {
+          id: newIntern.id,
+          name: newIntern.name,
+          email: newIntern.email,
+          intern_id: newIntern.intern_id,
+          college: newIntern.college,
+          phone: newIntern.phone,
+          role: newIntern.role,
+          status: newIntern.status,
+          joined_date: newIntern.joined_date,
+          created_at: newIntern.created_at,
+        };
+        const { error: fallbackError } = await supabase.from('interns').upsert(basePayload);
+        if (fallbackError) {
+          console.error('Supabase fallback upsert failed:', fallbackError);
+          throw new Error(`Failed to save intern to database: ${fallbackError.message}`);
         }
-      } catch (err) {
-        console.error('Supabase insert exception:', err);
       }
     }
+
+    // Update local state and localStorage
+    syncState([...interns, newIntern]);
   };
 
   const updateInternStatus = async (id: string, status: 'active' | 'inactive') => {
