@@ -56,7 +56,7 @@ export default function TermsPage() {
               These terms are governed by the laws of India. For any inquiries regarding service contracts or project terms, contact us at:
             </p>
             <p className="mt-2 font-mono-plex text-sm font-bold text-wine">
-              webcore.studios.2025@gmail.com
+              hello@webcorestudio.dev
             </p>
           </section>
         </div>

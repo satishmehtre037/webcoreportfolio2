@@ -130,7 +130,7 @@ export default function RootLayout({
         ],
         contactPoint: {
           "@type": "ContactPoint",
-          email: "satishmehtre037@gmail.com",
+          email: "hello@webcorestudio.dev",
           contactType: "customer support",
         },
       },

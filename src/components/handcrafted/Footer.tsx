@@ -70,10 +70,10 @@ export const Footer: React.FC = () => {
             <ul className="mt-4 space-y-3 font-body text-sm">
               <li>
                 <a
-                  href="mailto:webcore.studios.2025@gmail.com"
+                  href="mailto:hello@webcorestudio.dev"
                   className="inline-flex items-center gap-2 text-ivory/80 hover:text-ivory transition-colors font-mono-plex text-xs"
                 >
-                  <Mail size={15} className="text-sage" /> webcore.studios.2025@gmail.com
+                  <Mail size={15} className="text-sage" /> hello@webcorestudio.dev
                 </a>
               </li>
               <li>

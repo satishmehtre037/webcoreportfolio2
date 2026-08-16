@@ -61,7 +61,7 @@ export default function PrivacyPolicyPage() {
               If you have any questions regarding this Privacy Policy, please reach out to us at:
             </p>
             <p className="mt-2 font-mono-plex text-sm font-bold text-wine">
-              webcore.studios.2025@gmail.com
+              hello@webcorestudio.dev
             </p>
           </section>
         </div>

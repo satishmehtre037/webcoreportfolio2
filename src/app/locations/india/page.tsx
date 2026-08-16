@@ -35,7 +35,7 @@ export default function IndiaLocationPage() {
     "@id": `${baseUrl}/locations/india#organization`,
     url: `${baseUrl}/locations/india`,
     telephone: "+91-9000000000",
-    email: "satishmehtre037@gmail.com",
+    email: "hello@webcorestudio.dev",
     address: {
       "@type": "PostalAddress",
       addressCountry: "IN",

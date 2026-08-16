@@ -4,7 +4,7 @@ export const SITE = {
   description:
     "WebCore designs and ships production-grade software — from AI platforms to polished SaaS — with clarity, craft, and measurable outcomes.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "https://webcorestudio.dev",
-  email: "hello@webcore.dev",
+  email: "hello@webcorestudio.dev",
   social: {
     linkedin: "https://linkedin.com/company/webcore",
     github: "https://github.com/webcore",
