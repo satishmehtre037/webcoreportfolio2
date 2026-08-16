@@ -3,7 +3,7 @@ export const SITE = {
   tagline: "Software engineering studio",
   description:
     "WebCore designs and ships production-grade software — from AI platforms to polished SaaS — with clarity, craft, and measurable outcomes.",
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://webcorestudio.vercel.app",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://webcorestudio.dev",
   email: "hello@webcore.dev",
   social: {
     linkedin: "https://linkedin.com/company/webcore",

@@ -3,9 +3,8 @@ import { BLOG_POSTS } from "@/lib/blog/posts";
 import { SITE } from "@/lib/constants/site";
 
 export const revalidate = 86400;
-
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = SITE.url || "https://webcorestudio.vercel.app";
+  const baseUrl = SITE.url || "https://webcorestudio.dev";
 
   const staticPages: MetadataRoute.Sitemap = [
     {

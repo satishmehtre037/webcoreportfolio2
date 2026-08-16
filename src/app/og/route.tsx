@@ -90,7 +90,7 @@ export async function GET(request: Request) {
             }}
           >
             <span style={{ fontSize: "20px", color: "#A8A29E" }}>
-              webcorestudio.vercel.app
+              webcorestudio.dev
             </span>
             <span style={{ fontSize: "20px", color: "#A8A29E" }}>
               Craft Over Templates

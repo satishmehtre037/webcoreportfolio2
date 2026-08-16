@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: BlogPostPageProps): Promise<M
   const post = BLOG_POSTS.find((p) => p.slug === slug);
   if (!post) return {};
 
-  const baseUrl = SITE.url || "https://webcorestudio.vercel.app";
+  const baseUrl = SITE.url || "https://webcorestudio.dev";
   const ogImageUrl = `${baseUrl}/og?title=${encodeURIComponent(post.title)}&category=${encodeURIComponent(post.category)}`;
 
   return {
@@ -61,7 +61,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const post = BLOG_POSTS.find((p) => p.slug === slug);
   if (!post) notFound();
 
-  const baseUrl = SITE.url || "https://webcorestudio.vercel.app";
+  const baseUrl = SITE.url || "https://webcorestudio.dev";
 
   const articleSchema = {
     "@context": "https://schema.org",

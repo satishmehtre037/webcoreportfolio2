@@ -33,7 +33,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE.url || "https://webcorestudio.vercel.app"),
+  metadataBase: new URL(SITE.url || "https://webcorestudio.dev"),
   title: {
     default: "WebCore Studio — AI Software Development Company & Web Studio",
     template: "%s · WebCore Studio",
@@ -56,19 +56,19 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "./",
     types: {
-      "application/rss+xml": `${SITE.url || "https://webcorestudio.vercel.app"}/rss.xml`,
+      "application/rss+xml": `${SITE.url || "https://webcorestudio.dev"}/rss.xml`,
     },
   },
   openGraph: {
     title: "WebCore Studio — AI & Software Development Company",
     description:
       "Craft over templates. Handcrafted Next.js platforms, custom AI copilots, and enterprise software systems.",
-    url: "https://webcorestudio.vercel.app",
+    url: SITE.url || "https://webcorestudio.dev",
     siteName: "WebCore Studio",
     type: "website",
     images: [
       {
-        url: "https://webcorestudio.vercel.app/og",
+        url: `${SITE.url || "https://webcorestudio.dev"}/og`,
         width: 1200,
         height: 630,
         alt: "WebCore Studio AI & Software Engineering",
@@ -80,7 +80,7 @@ export const metadata: Metadata = {
     title: "WebCore Studio — AI & Software Development Company",
     description:
       "Craft over templates. Handcrafted Next.js platforms, custom AI copilots, and enterprise software systems.",
-    images: ["https://webcorestudio.vercel.app/og"],
+    images: [`${SITE.url || "https://webcorestudio.dev"}/og`],
   },
   robots: {
     index: true,
@@ -110,7 +110,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const baseUrl = SITE.url || "https://webcorestudio.vercel.app";
+  const baseUrl = SITE.url || "https://webcorestudio.dev";
 
   const schemaGraph = {
     "@context": "https://schema.org",

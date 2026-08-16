@@ -24,9 +24,8 @@ export const metadata: Metadata = {
     type: "website",
   },
 };
-
 export default function IndiaLocationPage() {
-  const baseUrl = SITE.url || "https://webcorestudio.vercel.app";
+  const baseUrl = SITE.url || "https://webcorestudio.dev";
 
   const localBusinessSchema = {
     "@context": "https://schema.org",

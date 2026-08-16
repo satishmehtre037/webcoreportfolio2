@@ -4,7 +4,7 @@ import { SITE } from "@/lib/constants/site";
 export const revalidate = 86400; // Revalidate daily
 
 export async function GET() {
-  const baseUrl = SITE.url || "https://webcorestudio.vercel.app";
+  const baseUrl = SITE.url || "https://webcorestudio.dev";
 
   const rssItemsXml = BLOG_POSTS.map(
     (post) => `
