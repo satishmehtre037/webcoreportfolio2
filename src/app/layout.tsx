@@ -55,9 +55,9 @@ export const metadata: Metadata = {
     "WebCore Studio",
   ],
   alternates: {
-    canonical: "./",
+    canonical: "https://webcorestudio.dev",
     types: {
-      "application/rss+xml": `${SITE.url || "https://webcorestudio.dev"}/rss.xml`,
+      "application/rss+xml": "https://webcorestudio.dev/rss.xml",
     },
   },
   openGraph: {
