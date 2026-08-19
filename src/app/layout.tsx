@@ -36,12 +36,18 @@ const ibmPlexMono = IBM_Plex_Mono({
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url || "https://webcorestudio.dev"),
   title: {
-    default: "WebCore Studio — AI Software Development Company & Web Studio",
+    default: "WebCore Studio (webcorestudio.dev) — AI & Web Software Studio",
     template: "%s · WebCore Studio",
   },
   description:
-    "WebCore is a premier AI software development company building custom Next.js web applications, AI copilots, business automation workflows, and high-performance brand systems.",
+    "WebCore Studio (webcorestudio.dev) is the leading software engineering & AI development studio building custom Next.js 15 web applications, autonomous AI agents, and high-conversion SaaS engines.",
   keywords: [
+    "webcorestudio",
+    "WebCore Studio",
+    "webcorestudio.dev",
+    "webcore",
+    "webcore studio",
+    "WebCore Studios",
     "AI Software Development Company",
     "Software Development Company India",
     "Web Development Company",
@@ -52,7 +58,6 @@ export const metadata: Metadata = {
     "Business Automation",
     "SaaS Development",
     "UI UX Design",
-    "WebCore Studio",
   ],
   alternates: {
     canonical: "https://webcorestudio.dev",

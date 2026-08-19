@@ -126,7 +126,7 @@ export const Hero: React.FC = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.5 }}
             >
-              <Overline>WebCore — AI & Software Studio</Overline>
+              <Overline>WebCore Studio — Software & AI Engineering (webcorestudio.dev)</Overline>
             </motion.div>
 
             <motion.h1
