@@ -117,6 +117,13 @@ export default function RootLayout({
     "@context": "https://schema.org",
     "@graph": [
       {
+        "@type": "WebSite",
+        "@id": `${baseUrl}/#website`,
+        name: "WebCore Studio",
+        alternateName: ["WebCore", "WebCore Studios", "WebCore Studio India"],
+        url: baseUrl,
+      },
+      {
         "@type": "Organization",
         "@id": `${baseUrl}/#organization`,
         name: "WebCore Studio",
