@@ -125,27 +125,61 @@ export default function RootLayout({
         "@type": "WebSite",
         "@id": `${baseUrl}/#website`,
         name: "WebCore Studio",
-        alternateName: ["WebCore", "WebCore Studios", "WebCore Studio India"],
+        alternateName: ["webcorestudio", "WebCore", "WebCore Studios", "WebCore Studio India", "webcorestudio.dev"],
         url: baseUrl,
+        description: "Bespoke AI software development company and high-performance Next.js engineering studio.",
+        inLanguage: "en-US",
       },
       {
         "@type": "Organization",
         "@id": `${baseUrl}/#organization`,
         name: "WebCore Studio",
+        alternateName: "WebCore",
         url: baseUrl,
         logo: {
           "@type": "ImageObject",
           url: `${baseUrl}/webcore-logo-mark.svg`,
+          width: "512",
+          height: "512",
         },
+        image: `${baseUrl}/og`,
+        description:
+          "WebCore Studio is a premier AI software engineering studio building custom Next.js 15 web applications, autonomous AI agents, and business automation platforms.",
         sameAs: [
           "https://linkedin.com/company/webcore",
           "https://github.com/webcore",
+          "https://x.com/webcore",
+          "https://instagram.com/webcorestudios",
         ],
-        contactPoint: {
-          "@type": "ContactPoint",
-          email: "hello@webcorestudio.dev",
-          contactType: "customer support",
+        founder: {
+          "@type": "Person",
+          name: "Satish Mehtre",
+          jobTitle: "Founder & Lead Systems Architect",
         },
+        address: {
+          "@type": "PostalAddress",
+          streetAddress: "Kharadi IT Park",
+          addressLocality: "Pune",
+          addressRegion: "Maharashtra",
+          postalCode: "411014",
+          addressCountry: "IN",
+        },
+        contactPoint: [
+          {
+            "@type": "ContactPoint",
+            telephone: "+91-9823000000",
+            email: "hello@webcorestudio.dev",
+            contactType: "customer support",
+            areaServed: ["IN", "US", "GB", "AE", "SG", "Worldwide"],
+            availableLanguage: ["English", "Hindi"],
+          },
+          {
+            "@type": "ContactPoint",
+            email: "hello@webcorestudio.dev",
+            contactType: "sales",
+            areaServed: "Worldwide",
+          },
+        ],
       },
       {
         "@type": "ProfessionalService",
@@ -157,11 +191,14 @@ export default function RootLayout({
         description:
           "Handcrafted digital products, custom AI copilots, high-performance Next.js web platforms and brand systems for ambitious companies.",
         priceRange: "$$",
-        telephone: "+91-9000000000",
+        telephone: "+91-9823000000",
         address: {
           "@type": "PostalAddress",
-          addressCountry: "IN",
+          streetAddress: "Kharadi IT Park",
+          addressLocality: "Pune",
           addressRegion: "Maharashtra",
+          postalCode: "411014",
+          addressCountry: "IN",
         },
         aggregateRating: {
           "@type": "AggregateRating",
